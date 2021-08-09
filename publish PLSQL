@@ -1,0 +1,23 @@
+We need to build wrappers in PL/SQL only for those Java methods we want to make available through a PL/SQL interface.Java methods can access other java methods in the JVM directly,
+without any need for a wrapper, we write a call spec - a PL/SQL program header (function or procedure) whose body is actually a call to Java methods via the Language Java class.
+
+#PL/SQL code:
+
+BEGIN
+  traf_dba_owner.titan_env.cache_execution_details();
+      traf_dba_owner.titan_env.publish_table_crud(table_name_in       => 'ASSIGNMENT_FINAL_PRICES'
+                                                 ,target_component_in => 'INVOICE');
+      traf_dba_owner.titan_env.publish_view(view_name_in        => 'TF_SALES_POSTED_AMOUNTS_VW'
+                                           ,target_component_in => 'INVOICE');
+      traf_dba_owner.titan_env.publish_sequence(sequence_name_in    => 'TAI_POSTING_HISTORY_ID_SEQ'
+                                               ,target_component_in => 'INVOICE');
+      traf_dba_owner.titan_env.publish_view(view_name_in        => 'TF_SALES_POSTED_AMOUNTS_VW'
+                                           ,target_component_in => 'INVOICE');
+      traf_dba_owner.titan_env.publish_type(type_name_in => 'SI_SEC_INVOICE_TAB_TYP'
+                                           ,target_component_in => 'SECURIT');
+      traf_dba_owner.titan_env.publish_procedure(procedure_name_in => 'SI_UPDATE_ISSUE_HIST_FOR_LOTS'
+                                          ,target_component_in => 'INVOICE');                                    
+      traf_dba_owner.titan_env.publish_function(function_name_in => 'si_cost_group_manual_est_amt'
+                                          ,target_component_in => 'INVOICE');
+  traf_dba_owner.titan_env.clear_execution_details_cache();
+END;
