@@ -1,0 +1,436 @@
+Java OOPS Concept:
+
+Java is an object oriented language widely used in web application,mobile and embedded system.
+
+Basic concepts of OOPS :
+1. Object
+2. Class
+3. Polymorphism
+4. Encapsulation
+5. Abstraction
+6. Inheritance
+
+Difference between C++ and Java
+
+1. C++ is platform dependent while Java is platform independent.
+2. C++ is compiled language only but Java is both compiled as well as interpreted language.
+3. C++ supports multiple inheritance but Java doesn't.
+4. C++ supports structure and unions while Java doesn't.
+5. C++ is nearer to hardware while Java  doesn't.
+
+Method Overloading : When two functions are having same function names but different signatures, then, it is called method overloading. It is compile time polymorphism.The return
+					 type can be same as well as different.
+
+Method Overriding  : When two functions one in parent and one in child,having same method name, same signature and same return type, then, it is called method overriding.
+					 It is Run time polymorphism.
+					 
+
+Class : Class is a blueprint of an object, which signifies the data members and methods and that can be accessed via creating an instance of that class.It doesn't consume memory
+		while creation.
+Object: Object is an instance of an class, where each memeber variables and methods can be accessed by creating an object of that class.It consumes memory while creation.
+
+Inheritance : When one object acquires all the properties and behaviour of another class or parent class, it is called inheritance.
+
+Polymorphism : Polymorphism means many. So , it is the ability to show that the same thing can have different behaviours in different situations. Two types:
+			   1. Compile Time Polymorphism : Method Overloading
+			   2. Run Time Polymorphism : Method overriding
+			   
+Encapsulation : It may be defined as the protective shield that prevents the data from being accessed outside  the code. Acutally, variables are hidden and can be accessed through 
+				setters and getters. It is also known as the combination of data hiding and abstraction because we are hiding the data by making the variables private and exposing 
+				only setters and getters which are only required to access it, thus , exposing only essential information.
+				Advantages :
+				1. Data Hiding
+				2. Increased Flexibility
+				3. Reusability
+				
+Abstraction  : It is the property by virtue of which only essentials details are displayed to the user. It can be achieved with the help of abstract class and interfaces.
+				Advantages :
+				1. Reduces complexity to view the things
+				2. Avoids code duplication and increases reusability.
+
+Interface : An interface is a blueprint of a class.
+			Variables are always public, static and final.
+			Methods are always public and abstract.
+			
+Access Modifiers : how far the code can be accessed
+1. private : can be accessed only inside the class body.
+2. public  : can be accessed by everyone
+3. protected : can be accessed by any class from same package and child class from other package
+4. default  : can be accessed by any class from same package 
+
+Instance Initialization Block : runs before constuctor, and value will be initialised every time the object is created and it will also run the same time
+Static Initialization Block: It can access static memebers only.It will run only one time in the life time of a class.
+
+Exception : Unwanted or unexpected event which occurs during the execution of a program.
+
+Threading : Concurrent execution of multiple parts of program for maximum utilisation of CPU.
+			It can be implemented with two ways.
+			1. Extending the thread class. -> create a class extending Thread class and then just create instance of it
+			2. Implementing the Runnable Interface. -> pass instance of class implementing the  interface in Thread class parameter
+			
+1. Extending Thread Class
+
+// Java code for thread creation by extending
+// the Thread class
+class MultithreadingDemo extends Thread {
+	public void run()
+	{
+		try {
+			// Displaying the thread that is running
+			System.out.println(
+				"Thread " + Thread.currentThread().getId()
+				+ " is running");
+		}
+		catch (Exception e) {
+			// Throwing an exception
+			System.out.println("Exception is caught");
+		}
+	}
+}
+
+// Main Class
+public class Multithread {
+	public static void main(String[] args)
+	{
+		int n = 8; // Number of threads
+		for (int i = 0; i < n; i++) {
+			MultithreadingDemo object
+				= new MultithreadingDemo();
+			object.start();
+		}
+	}
+}
+
+2. Implementing Runnable Interface
+
+// Java code for thread creation by implementing
+// the Runnable Interface
+class MultithreadingDemo implements Runnable {
+	public void run()
+	{
+		try {
+			// Displaying the thread that is running
+			System.out.println(
+				"Thread " + Thread.currentThread().getId()
+				+ " is running");
+		}
+		catch (Exception e) {
+			// Throwing an exception
+			System.out.println("Exception is caught");
+		}
+	}
+}
+
+// Main Class
+class Multithread {
+	public static void main(String[] args)
+	{
+		int n = 8; // Number of threads
+		for (int i = 0; i < n; i++) {
+			Thread object
+				= new Thread(new MultithreadingDemo());
+			object.start();
+		}
+	}
+}
+
+Singleton Class : The primary purpose of a Single class is to restrict the limit of the number of object creation to only one. 
+				  This often ensures that there is access control to resources, for example, socket or database connection.
+				  
+Defining singleton class :
+1. Make a constructor private.
+2. Write a static method that has the return type object of this singleton class. Here, the concept of Lazy initialization is used to write this static method.
+
+** To instantiate a normal class, we use a java constructor. On the other hand, to instantiate a singleton class, we use the getInstance() method.
+
+class Singleton {
+    // Static variable reference of single_instance
+    // of type Singleton
+    private static Singleton single_instance = null;
+  
+    // Declaring a variable of type String
+    public String s;
+  
+    // Constructor
+    // Here we will be creating private constructor
+    // restricted to this class itself
+    private Singleton()
+    {
+        s = "Hello I am a string part of Singleton class";
+    }
+  
+    // Static method
+    // Static method to create instance of Singleton class
+    public static Singleton getInstance()
+    {
+        if (single_instance == null)
+            single_instance = new Singleton();
+  
+        return single_instance;
+    }
+}
+
+Lazy Loading : Lazy loading is the practice of delaying load or initialization of resources or objects until they’re 
+			   actually needed to improve performance and save system resources.
+			   
+Eager Loading : Eager loading initializes or loads a resource as soon as the code is executed. 
+
+-----------------------------------------------------------------------------------------
+Java 8
+
+New Features :
+
+1. Lambda Expression : One line function
+2. Interfaces having default method : Default method implementation
+3. Method References : Referencing function with their names
+4. Functional interface : interface with one functional interface
+5. Stream API : stream to facilitate pipeline processing
+6. Date Time API : Improved date time api
+7. Optional : To handle null values properly
+
+** Default methods were introduced in Java 8 to have 'Backward Compatibility in case JDK modifies any interfaces. In case a new abstract method is added to the interface, all classes implementing the interface will break and will have to implement the new method. With default methods, 
+there will not be any impact on the interface implementing classes. default methods can be overridden if needed in the implementation. 
+
+1. Lambda Expression :
+
+	private static void printAllNumbersInListFunctional(List<Integer> numbers) {
+		
+		numbers.stream() // Convert to Stream
+				.filter(number -> number % 2 == 0) // Lamdba Expression
+				//mapping - x -> x * x
+				.map(number -> number * number)
+				.forEach(System.out::println);// Method Reference
+		}
+		
+	private static int addListFunctional(List<Integer> numbers) {
+		//Stream of number -> One result value
+		  //Combine them into one result => One Value
+		  // 0 and FP02Functional::sum
+		return numbers.stream()
+				.parallel()
+		  //.reduce(0, FP02Functional::sum);	
+		  // .reduce(0, (x,y) -> x + y);
+			.reduce(0, Integer::sum);
+		}
+		
+	List<Integer> squaredNumbers =  mapAndCreateNewList(numbers, mappingFunction);
+	
+	private static List<Integer> mapAndCreateNewList(List<Integer> numbers,
+			Function<Integer, Integer> mappingFunction) {
+		return numbers.stream()
+				.map(mappingFunction)
+				.collect(Collectors.toList());
+	}
+		
+2. Method References : 
+	A method reference can be used to point the followinng three types of methods 
+	1. Static methods
+	2. Instance methods
+	3. Constructor using new methods (TreeSet::new)
+
+3. Functional Interface :
+   As compareTo Functional
+   
+		Predicate<Integer> isEvenPredicate = (Integer x) -> x % 2 == 0;  // A boolean valued Function
+
+		Function<Integer, Integer> squareFunction = x -> x * x;         //  Takes first type of argument and produces second type of argument
+		
+		Function<Integer, String> stringOutpuFunction = x -> x + " ";
+
+		Consumer<Integer> sysoutConsumer = x -> System.out.println(x);  // Takes argument and return nothing
+
+		BinaryOperator<Integer> sumBinaryOperator = (x, y) -> x + y;   // Take two values and compute it
+		
+		//No input > Return Something
+		Supplier<Integer> randomIntegerSupplier = () -> {
+			Random random = new Random();
+			return random.nextInt(1000);
+		};
+		
+		//System.out.println(randomIntegerSupplier.get());
+		
+		UnaryOperator<Integer> unaryOperator = x -> 3 * x;         // 
+
+4. Default Method :
+   It is used for backward compatibility so that old interfaces can be used to leverage the lambda function
+   Ex : forEach()
+   
+   
+-------------------------------------------------------------------------------------------------------
+
+SQL
+
+DDL : create, alter, drop
+DML : update, insert,delete
+TCL  : grant revoke
+
+--------------------------------------------------------------------------------------------------------
+
+Spring Boot : Spring Framework + Embedded HTTP Servers - XML configuration
+Actuator : It actually provides additional features which help us monitor the spring boot application. Specially useful for production  
+
+XSD: XML Schema Definition
+
+If an XML follows XSD, it is said to be valid XML.
+
+Element is used to store some values in xml.
+Complex Type is sort of class. It actually stores elements and attributes.
+SimpleType is used to apply restrictions on elements
+   
+------------------------------------------------------------------------------------------------------
+
+Interview Questions :
+
+ *******  SOAP :  *******
+
+1. What is the major obstacle users faced when using SOAP?
+
+When using SOAP, users often see the firewall security mechanism as the biggest obstacle. This block all the ports leaving few like HTTP port 80 and the 
+HTTP port used by SOAP that bypasses the firewall. The technical complaint against SOAP is that it mixes the specification for message transport with the 
+specification for message structure.
+
+
+ *******  REST (Representation State Transfer) :  *******
+
+1. What is the concept of statelessness in REST?
+
+The REST architecture is designed in such a way that the client state is not maintained on the server. This is known as statelessness. 
+The context is provided by the client to the server using which the server processes the client’s request. The session on the server is identified by the 
+session identifier sent by the client.
+
+2. Can you tell the disadvantages of RESTful web services?
+
+The disadvantages are:
+1. As the services follow the idea of statelessness, it is not possible to maintain sessions. 
+(Session simulation responsibility lies on the client-side to pass the session id)
+
+2. REST does not impose security restrictions inherently. It inherits the security measures of the protocols implementing it. Hence, 
+care must be chosen to implement security measures like integrating SSL/TLS based authentications, etc
+
+** Representational State Transfer refers to transferring "representations". You are using a "representation" of a resource to transfer resource state which 
+   lives on the server into application state on the client.
+
+3. What are Idempotent methods? How is it relevant in RESTful web services domain?
+
+The meaning of idempotent is that even after calling a single request multiple times, the outcome of the request should be the same. 
+While designing REST APIs, we need to keep in mind to develop idempotent APIs. This is because the consumers can write client-side code which can result in 
+duplicate requests intentionally or not. Hence, fault-tolerant APIs need to be designed so that they do not result in erroneous responses.
+
+** REST provides idempotent methods automatically. GET, PUT, DELETE, HEAD, OPTIONS, and TRACE are the idempotent HTTP methods. POST is not idempotent.
+** POST is not idempotent because POST APIs are usually used for creating a new resource on the server. While calling POST methods N times, there will be N new resources. 
+   This does not result in the same outcome at a time.
+   
+4. What makes REST services to be easily scalable?
+
+REST services follow the concept of statelessness which essentially means no storing of any data across the requests on the server. This makes it easier 
+to scale horizontally because the servers need not communicate much with each other while serving requests.
+
+5. Based on what factors, you can decide which type of web services you need to use - SOAP or REST?
+
+* Does the client require a formal strict contract?
+	If yes, SOAP provides strict contracts by using WSDL. Hence, SOAP is preferred here.
+
+* Does your service require support for multiple formats of data?
+	If yes, REST supports multiple data formats which is why it is preferred in this case.
+
+* Does your service require both synchronous and asynchronous requests?
+	SOAP has support for both sync/async operations.
+	REST only supports synchronous calls.
+	
+* Does your service require statelessness?
+	If yes, REST is suitable. If no, SOAP is preferred.
+
+* Does your service require a high-security level?
+	If yes, SOAP is preferred. REST inherits the security property based on the underlying implementation of the protocol. Hence, it can’t be preferred at all times.
+
+* Does your service require support for transactions?
+	If yes, SOAP is preferred as it is good in providing advanced support for transaction management.
+	
+ ******* Spring Boot :  *******
+ 
+1. Why Spring Boot over Spring ?
+
+ 1. Starter POM.
+ 2. Auto Configuration.
+ 3. Embedded server.
+ 4. InMemory DB.
+ 5. Actuators
+
+2. What does the @SpringBootApplication annotation do internally?
+
+The @SpringBootApplication annotation is equivalent to using @Configuration, @EnableAutoConfiguration, and @ComponentScan with their default attributes.
+
+@Configuration annotation indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions 
+and service requests for those beans at runtime.
+
+The @EnableAutoConfiguration annotation enables Spring Boot to auto-configure the application context. Therefore, it automatically creates and 
+registers beans based on both the included jar files in the classpath and the beans defined by us.
+
+ ******* Microservices : *******
+
+1. Main features of microservices 
+
+ 1. Decoupling
+ 2. Componentization
+ 3. Continuous Delivery
+ 4. Agility
+ 
+2. Main components of microservices
+
+ 1. Containers, Clustering, and Orchestration
+ 2. Cloud Infrastructure 
+ 3. API Gateway
+ 4. Service Delivery
+ 
+** Monolithic : Single Unit
+** SOA        : Coarse Grained
+** Microservice : Fine Grained
+
+** Coupling: It is defined as a relationship between software modules A and B, and how much one module depends or interacts with another one. 
+   Couplings fall into three major categories. Modules can be highly coupled (highly dependent), loosely coupled, and uncoupled from each other.
+
+** Cohesion : It is defined as a relationship between two or more parts/elements of a module that serves the same purpose. Generally, a module with high cohesion 
+   can perform a specific function efficiently without needing communication with any other modules. High cohesion enhances the functionality of the module.
+   
+ ******* Spring Cloud : *******
+ 
+1. What is Spring Cloud ?
+
+It may be defined as the Spring Boot based spring integration applications that provide integration with external system.
+
+Advantages :
+
+1. It overcomes issues associated with distributed system like network issues, latency, bandwidth issues and security issues.
+2. Service Discovery : How services in a cluster can find and talk to each other. ( Eureka Service Registration and Discovery)
+3. Load Balancing improves the distribution of load on services. (Netflix Ribbon)
+4. Fault Tolerance : Hystrix Fault Tolerance 
+				Suppose if the microservice in the above diagram failed, then using the traditional approach we will propagate an exception. But this will still cause the whole system to crash anyways.
+				This problem gets more complex as the number of microservices increase. The number of microservices can be as high as 1000. This is where hystrix comes into picture
+				We will be the Fallback method feature of Hystrix for this scenario.
+5. Circuit Breaker :  Hystrix Circuit Breaker
+				If the exceptions keep on occuring in the firstPage method() then the Hystrix circuit will break and the employee consumer will skip the firtsPage 
+				method all together and directly call the fallback method.
+
+Cross-origin resource sharing (CORS) is a browser mechanism which enables controlled access to resources located outside of a given domain.
+
+Angular Questions :
+
+angular.json -> main.ts (entrypoint) -> it calls bootstrapm module (App Module)-> AppModule -> AppComponent
+
+
+JAR & WAR
+
+1. The first difference is in their extension.
+2. JAR allows us to package multiple files in order to use it as library. WAR is used for web applications.
+3. JAR can be executed with the command line but we need server to execute WAR.
+
+spring profile ?
+
+
+
+
+ 
+
+
+
+
