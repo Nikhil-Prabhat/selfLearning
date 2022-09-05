@@ -1,0 +1,53 @@
+Drone CI is docker based CI/CD. Drone is an open source Continuous Integration and Delivery platform built completely on docker. It is truly Docker native; all components are docker containers, and all pipeline steps execution from an application take place as containers too. Docker works as an encapsulation method for isolating builds and deployments.
+
+Features:
+
+1.Drone is very lightweight as it is written in Go and all components run as docker containers. This makes it easy to deploy Drone in many platforms or cloud providers in a matter of minutes. By default, each pipeline step is executed inside an isolated docker container that is automatically downloaded at runtime. Also, Drone has a very low learning curve, compared with other CI/CD products like Jenkins.
+
+2.Runners are available for multiple operating systems and architectures, including Linux amd64, Linux arm/arm64, Windows and Mac servers. With such broad platform support, a single product can be used for a mix of use case scenarios: from traditional cloud deployments, to IoT, to native Windows or Mac builds.
+Scalable architecture: Drone provides autoscalers for different cloud providers that will launch runners based on demand, helping developers save on their cloud bills by avoiding the need of having dedicated resources assigned for them.
+
+3.It is available to install on-premise, or as a SaaS offering with additional features, so you can pick what best fits your needs.
+Functionality can be extended with plugins and extensions. Plugins add functionality to pipelines and extensions to Drone core itself. Plugins are very easy to develop because they can be written in any language, and they run isolated in a container.
+
+4.Pipelines are defined in YAML format with a simple and well-defined syntax.
+
+5.Different database backend options. By default, it uses SQLite and works out of the box, but for production deployments it can work with external PostgreSQL or MySQL databases.
+
+6. And the better for the end, It is open source!
+
+Architecture:
+
+Drone has a very simple client and server-based architecture, it is composed of three things:
+
+Drone server
+Drone agents (called runners)
+Drone pipeline configuration file (on each git repository)
+
+The Server :
+
+The Drone Server is the main component. It is a go binary, and it is packaged as a docker image that can be run as a docker container on Linux, Mac, Windows machines or in a Kubernetes cluster.
+
+The server is in charge of monitoring the git repositories in an SCM platform (like GitHub, Bitbucket, Gitea and others) for changes and then instructing a runner what to do according to a configuration file stored on the repository. This file is what is commonly known as the pipeline definition. The server authenticates with the git repository using OAuth, and with runners using a shared secret.
+
+The Drone server automatically creates a webhook on the git repository when it is activated on the server. Then, when an event occurs, for example a developer pushes some code to a branch, the webhook is triggered and the Drone server is notified about that. When this happens, the drone server pulls the drone configuration file from the git repository, parses it and queues the specified tasks (pipeline steps) on it on the appropriate runner.
+
+The Runner :
+
+The runners execute the steps specified on the Drone configuration file of a repository. Like the server, the runners are packaged as a docker image and also can be run as a docker container on Linux, Mac, Windows machines, on a Kubernetes cluster or directly on a VM. There are several types of runners:
+
+Docker runner: This runner is a daemon that executes pipeline steps inside ephemeral docker containers. It is run as a container on Linux, Mac or Windows machines. It can be installed as a single docker runner, or on multiple machines to create a build cluster.
+
+Kubernetes runner: This runner is a standalone service that executes pipelines inside pods.
+
+Local execution runner: This runner is a daemon that executes build pipelines directly on the host machine without isolation, using the default shell. It is recommended for workloads that cannot be executed inside containers, or cannot easily be adapted to container-based pipelines. This runner is especially useful for operating systems and architectures that do not support containers.
+
+SSH runner: This runner executes pipeline commands on a remote server using the SSH protocol. The pipeline commands are executed directly on the remote server without isolation, using the default shell.
+
+Cloud runners for DigitalOcean, AWS and Macstadium: This type of runner is recommended for pipelines that require privileged access to a full virtual machine, and are unsuitable for execution inside containers. These runners execute pipelines in dedicated, ephemeral virtual machines, and provide secure isolation for untrusted workloads.
+
+Runners run one job at a time, so to be able to run many jobs in parallel, then multiple runners must be used.
+
+The Configuration File :
+
+The configuration file defines the set of steps that define the pipeline for a git repository. It is a YAML file that lives within the git repository, and it is named .drone.yml. In recent Drone versions some other formats to define this config file have been introduced, like Jsonet and Starlark that bring templating and scripting capabilities for more complex pipelines, but to keep things simple, we will use the default YAML format.
