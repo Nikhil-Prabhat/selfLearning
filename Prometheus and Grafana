@@ -1,0 +1,16 @@
+Micrometer :
+
+Micrometer provides a simple facade to integrate actuator metrices with external monitoring systems and it allowing us to instrument your JVM based application.
+It supports several monitoring systems like Netflix Atlas, AWS Cloudwatch ,Datadog, InfluxData,SignalFX,graphite,Wavefront,Prometheus etc.
+
+Prometheus :
+
+Prometheus is an open source monitoring system that was originally built by SoundCloud. It consists of the following core components.
+1. A data scrapper that pulls metrics data over HTTP periodically at configured interval.
+2. A time series database to store all the metrices data.
+3. A simple user interface where you can visualise,query, and monitor all the metrices.
+
+Grafana :
+
+Grafana allows you to bring data from various data sources like ElasticSearch, Prometheus , Graphite, InfluxDB etc and visualise them with beautiful graphs.
+It also lets you set rules based on your metrices data. When an alert changes state, it can notify you over email, slack or other various channels.
