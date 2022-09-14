@@ -3,7 +3,7 @@ Commonly Used Git Commands:-
 -git pull
 -git push
 -git checkout invoicing
--git reset hard
+-git reset --hard
 -git log --grep "CCEP-12345"   →  grep command to search commit # for Jira id
 -git cherry-pick "commit id"
 -git config --system core.longpaths true  →  to resolve Filename too long error: unable to create file" errors
