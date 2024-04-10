@@ -23,7 +23,8 @@ Method Overloading : When two functions are having same function names but diffe
 
 Method Overriding  : When two functions one in parent and one in child,having same method name, same signature and same return type, then, it is called method overriding.
 					 It is Run time polymorphism.
-					 
+
+Method Hiding : When two functions, one in parent and one in chile, having same method name and signature but static, then it is called method hiding.
 
 Class : Class is a blueprint of an object, which signifies the data members and methods and that can be accessed via creating an instance of that class.It doesn't consume memory
 		while creation.
