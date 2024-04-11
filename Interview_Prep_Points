@@ -52,6 +52,12 @@ Abstraction  : It is the property by virtue of which only essentials details are
 Interface : An interface is a blueprint of a class.
 			Variables are always public, static and final.
 			Methods are always public and abstract.
+
+Abstract Class and Interfaces :
+1. Abstract class can have any access modifiers for members. Interfaces can have only one public members.
+2. Abstract Class may or maynot contain abstract method. Interfaces can't have defined metehods.
+3. Abstract Class can have static or non-static members. Interfaces can have only static member variables.
+4. Abstract Class can have final or non-final members. Interfaces can have only final member variables.
 			
 Access Modifiers : how far the code can be accessed
 1. private : can be accessed only inside the class body.
