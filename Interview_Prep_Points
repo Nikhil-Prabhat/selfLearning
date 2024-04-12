@@ -141,6 +141,131 @@ class Multithread {
 	}
 }
 
+File Handling in Java
+
+Why File Handling is Required :-
+File Handling is an integral part of any programming language as file handling enables us to store the output of any particular program in a file and allows us to perform certain operations on it.
+In simple words, file handling means reading and writing data to a file.
+
+Reading file and writing into file in java
+The Java InputStream class is the superclass of all input streams. The input stream is used to read data from numerous input devices like the keyboard, network, etc. InputStream is an abstract class, and because of this, it is not useful by itself. 
+However, its subclasses are used to read data. Ex - FileInputStream
+
+The output stream is used to write data to numerous output devices like the monitor, file, etc. OutputStream is an abstract superclass that represents an output stream. OutputStream is an abstract class and because of this, it is not useful by itself. 
+However, its subclasses are used to write data. Ex - FileOutputStream
+
+File Operations In Java
+1. Create File
+
+In order to create a file in Java, you can use the createNewFile() method.
+If the file is successfully created, it will return a Boolean value true and false if the file already exists.
+// Import the File class
+import java.io.File;
+
+// Import the IOException class to handle errors
+import java.io.IOException;
+
+public class GFG {
+	public static void main(String[] args)
+	{
+
+		try {
+			File Obj = new File("myfile.txt");
+			if (Obj.createNewFile()) {
+				System.out.println("File created: "
+								+ Obj.getName());
+			}
+			else {
+				System.out.println("File already exists.");
+			}
+		}
+		catch (IOException e) {
+			System.out.println("An error has occurred.");
+			e.printStackTrace();
+		}
+	}
+}
+
+2. Read from a file
+We will use the Scanner class in order to read contents from a file. Following is a demonstration of how to read contents from a file in Java :
+
+// Import the File class
+import java.io.File;
+
+// Import this class for handling errors
+import java.io.FileNotFoundException; 
+
+// Import the Scanner class to read content from text files
+import java.util.Scanner; 
+
+public class GFG {
+	public static void main(String[] args)
+	{
+		try {
+			File Obj = new File("myfile.txt");
+			Scanner Reader = new Scanner(Obj);
+			while (Reader.hasNextLine()) {
+				String data = Reader.nextLine();
+				System.out.println(data);
+			}
+			Reader.close();
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("An error has occurred.");
+			e.printStackTrace();
+		}
+	}
+}
+
+3. Write to a file
+We use the FileWriter class along with its write() method in order to write some text to the file. Following is a demonstration of how to write text to a file in Java :
+
+// Import the FileWriter class
+import java.io.FileWriter; 
+
+// Import the IOException class for handling errors
+import java.io.IOException; 
+
+public class GFG {
+	public static void main(String[] args)
+	{
+		try {
+			FileWriter Writer
+				= new FileWriter("myfile.txt");
+			Writer.write(
+				"Files in Java are seriously good!!");
+			Writer.close();
+			System.out.println("Successfully written.");
+		}
+		catch (IOException e) {
+			System.out.println("An error has occurred.");
+			e.printStackTrace();
+		}
+	}
+}
+
+4. Delete a file
+We use the delete() method in order to delete a file. Following is a demonstration of how to delete a file in Java :
+
+// Import the File class
+import java.io.File; 
+
+public class GFG {
+	public static void main(String[] args)
+	{
+		File Obj = new File("myfile.txt");
+		if (Obj.delete()) {
+			System.out.println("The deleted file is : "
+							+ Obj.getName());
+		}
+		else {
+			System.out.println(
+				"Failed in deleting the file.");
+		}
+	}
+}
+
+
 In java, local variables can be blank but the instance variables always have default values. If reference variable does not contain anything, bydefault it contains null.
 In java, it is possible to declare a 2d array with different lengths of each array.
 If two or more strings have the same set of characters in the same sequence, then they share the same reference in the memory.
