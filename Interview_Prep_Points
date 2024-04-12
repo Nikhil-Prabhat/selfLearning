@@ -265,6 +265,26 @@ public class GFG {
 	}
 }
 
+Garbage Collection in Java
+
+1. In java , destruction of object is automatically done by JVM. There is no delete keyword in Java unlike C++.
+2. When there is no reference to an object, then the object is assumed to be no longer needed and the memory occupied by the object is released.
+3. This technique is called garbage collection and is accomplished by JVM.
+4. Whenever you run a java program, JVM creates three threads
+	* Main Thread : Responsible to call main function
+	* Thread Scheduler : Responsible for thread scheduling
+	* Garbage Collector Thread : Responsible for calling garbage collector, to sweep out abondoned objects from the heap memory.
+5. In these three threads, main thread is a user thread and remaining two are daemon threads which run in background.
+6. Abondoned objects or dead objects are those objects which doesn't have live references.
+7. Garbage Collector thread before sweeping out an abondoned object, it calls finalize() method of an object
+8. After finalize method is executed, object is destroyed from the memory.
+9. We can garbage collector explicitly using System.gc() but it is just a request to a garbage collector not a command, so it is upto GC to honor this request.
+
+Finlaize in Java
+
+1. Exceptions occured in finalize method are not propagated. They are ignored by the garbage collector.
+2. finalize() methods are not chained like constructors i.e there is no calling statement to superclass finalize() method inside the subclass of finalize() method.
+   You need to explicitly call superclass finalize method.
 
 In java, local variables can be blank but the instance variables always have default values. If reference variable does not contain anything, bydefault it contains null.
 In java, it is possible to declare a 2d array with different lengths of each array.
