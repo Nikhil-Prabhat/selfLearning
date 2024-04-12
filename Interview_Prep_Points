@@ -302,7 +302,7 @@ Outer.Inner inner = outer.new Inner();
 
 Anonymous Classes In Java
 Anonymous classes in java are more accurately known as anonymous inner classes. There is no such anonymous class without inner. They are defined inside another class.
-Anonymous classes are inner classes with no name.
+Anonymous classes are inner classes with no name. It can have only those methods which are already available in parent class.
 To instantiate anonymous inner class, we can do it by following ways : 
 	* Extend a class
 		new ParentClass(constructor args){methods declarations}
@@ -317,8 +317,66 @@ button.addActionListener(new ActionListener() {
         ...
     }
 }
-
 Since Java 8, lambda expressions seem to be a more preferred way though.
+
+Generic Classes In Java 
+
+Java Generics was introduced to deal with type-safe objects. It makes the code stable.Java Generics methods and classes, enables programmer with a single method declaration, a set of related methods, a set of related types. 
+Generics also provide compile-time type safety which allows programmers to catch invalid types at compile time. Generic means parameterized types.
+
+Single Type Parameter
+class Solution<T>
+{
+   T data;
+   public static T getData(){
+       return data;
+   }
+}
+
+Multiple Type Parameter
+public class Pair<K, V> {
+
+    private K key;
+    private V value;
+
+    public Pair(K key, V value) {
+    this.key = key;
+    this.value = value;
+    }
+
+    public K getKey()    { return key; }
+    public V getValue() { return value; }
+}
+
+Generic Method In Java
+We can also write generic functions that can be called with different types of arguments based on the type of arguments passed to the generic method. The compiler handles each method.
+
+// Java program to show working of user defined
+// Generic functions
+
+class Test {
+	// A Generic method example
+	static <T> void genericDisplay(T element)
+	{
+		System.out.println(element.getClass().getName()
+						+ " = " + element);
+	}
+
+	// Driver method
+	public static void main(String[] args)
+	{
+		// Calling generic method with Integer argument
+		genericDisplay(11);
+
+		// Calling generic method with String argument
+		genericDisplay("GeeksForGeeks");
+
+		// Calling generic method with double argument
+		genericDisplay(1.0);
+	}
+}
+
+A Java Cursor is an Iterator, that is used to iterate or traverse or retrieve a Collection or Stream object's elements one by one
 
 In java, local variables can be blank but the instance variables always have default values. If reference variable does not contain anything, bydefault it contains null.
 In java, it is possible to declare a 2d array with different lengths of each array.
