@@ -144,6 +144,7 @@ class Multithread {
 In java, local variables can be blank but the instance variables always have default values. If reference variable does not contain anything, bydefault it contains null.
 In java, it is possible to declare a 2d array with different lengths of each array.
 If two or more strings have the same set of characters in the same sequence, then they share the same reference in the memory.
+Implemeting multithreading with runnable class is much preferable as multiple inheritance is not possible in java and implementing multithreading gives the programmer an opputunity to extend a class.
 
 Singleton Class : The primary purpose of a Single class is to restrict the limit of the number of object creation to only one. 
 				  This often ensures that there is access control to resources, for example, socket or database connection.
