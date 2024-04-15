@@ -1,6 +1,24 @@
 Java OOPS Concept:
-
 Java is an object oriented language widely used in web application,mobile and embedded system.
+
+## JVM, JRE, JDK
+
+JVM (Java Virtual Machine) - It is an abstract machine. It is called virtual machine because it doesn't exist physically. It is a specification that provides runtime environment in which java bytecode
+	can be executed. Main tasks are :
+		1. Loads code
+		2. Verifies code
+		3. Executed code
+		4. Provides runtime env
+
+JRE (Java Runtime Environment) - It is a set of software tools which are used for developing java applications. It is used to provide the runtime envs. It is the implmentation of JVM. It physically exists.
+
+JDK (Java Development Kit) - JDK is a software development environment which is used to develop Java Applications and applets. It physically exists. It contains JRE + Standard tools.
+		Ex - Standard Edition Java Platform. It contains JVM, a few other resources such as interpreter/loader(java), a complier(javac), an archive(jar), a document generator (javadoc)
+		to complete the development of java application.
+
+JVM, JRE and JDK , all are platform dependent because the configuration of each OS is different from each other.But Java is platform independent.
+
+JVM + Set of libraries + Other files -> JRE + Development tools (java, javac) -> JDK 
 
 Basic concepts of OOPS :
 1. Object
@@ -24,11 +42,11 @@ Method Overloading : When two functions are having same function names but diffe
 Method Overriding  : When two functions one in parent and one in child,having same method name, same signature and same return type, then, it is called method overriding.
 					 It is Run time polymorphism.
 
-Method Hiding : When two functions, one in parent and one in chile, having same method name and signature but static, then it is called method hiding.
+Method Hiding : When two functions, one in parent and one in child, having same method name and signature but static, then it is called method hiding.
 
 Class : Class is a blueprint of an object, which signifies the data members and methods and that can be accessed via creating an instance of that class.It doesn't consume memory
 		while creation.
-Object: Object is an instance of an class, where each memeber variables and methods can be accessed by creating an object of that class.It consumes memory while creation.
+Object: Object is an instance of an class, where each member variables and methods can be accessed by creating an object of that class.It consumes memory while creation.
 
 Inheritance : When one object acquires all the properties and behaviour of another class or parent class, it is called inheritance.
 
@@ -140,6 +158,71 @@ class Multithread {
 		}
 	}
 }
+
+## Diamond Problem in Java
+When the child class inherits the properites of more than one parent class and the name of the methods are same, then at runtime, the child gets confused which one method to call at runtime,
+it is known as diamond problem in java. It can be fixed using interfaces.
+
+Problem
+// Java Program to demonstrate 
+// Diamond Problem 
+import java.io.*; 
+
+// Parent Class1 
+class Parent1 { 
+	void fun() { System.out.println("Parent1"); } 
+} 
+
+// Parent Class2 
+class Parent2 { 
+	void fun() { System.out.println("Parent2"); } 
+} 
+
+// Inherting the Properties from 
+// Both the classes 
+class test extends Parent1, Parent2 { 
+	// main function 
+	public static void main(String[] args) 
+	{ 
+		test t = new test(); 
+		t.fun(); 
+	} 
+}
+
+Solution
+// Java Programs to illustrate 
+// use of Interface to solve 
+// Diamond Problem 
+import java.io.*; 
+
+// Interfaces Declared 
+interface Parent1 { 
+	void fun(); 
+} 
+
+// Interfaces Declared 
+interface Parent2 { 
+	void fun(); 
+} 
+
+// Inheritance using Interfaces 
+class test implements Parent1, Parent2 { 
+	public void fun() 
+	{ 
+		System.out.println("fun function"); 
+	} 
+} 
+
+// Driver Class 
+class test1 { 
+	// main function 
+	public static void main(String[] args) 
+	{ 
+		test t = new test(); 
+		t.fun(); 
+	} 
+}
+
 
 File Handling in Java
 
