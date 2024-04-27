@@ -597,7 +597,26 @@ DML : update, insert,delete
 TCL  : grant revoke
 
 --------------------------------------------------------------------------------------------------------
+Container Concepts
 
+Container Orchestration 
+Container orchestration tools help manage the lifecycle of containerized applications, including deployment, scaling, and networking.
+Some of the popular orchestration tools include :
+1. Kubernetes
+2. Docker Swarm
+3. Amazon ECS
+4. Google Kubernetes Engine
+5. Microsoft Azure Kubernetes Engine
+6. Amazon Kubernetes Service.
+
+Responsibility of Container Orchestration tool :
+
+1. Orchestration     : It allows you to manage a cluster of containers as a single virtual system. It provides feature for deploying, scaling and managing containerized application across multiple nodes.
+2. Scalability       : It enables horizontal scaling of containers by adding or removing nodes from the cluster. It handles load balancing and service discovery to ensure efficient utilisation of resources.
+3. High Availability : It ensures features for high availability, such as automatic failover and rescheduling of containers in case of node failures.
+4. Production Ready  : It is designed for production use and is suitable for deploying and managing containerized applications in a distributed env.
+
+--------------------------------------------------------------------------------------------------------
 Spring Boot : Spring Framework + Embedded HTTP Servers - XML configuration
 Actuator : It actually provides additional features which help us monitor the spring boot application. Specially useful for production  
 
