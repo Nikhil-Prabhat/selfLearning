@@ -618,7 +618,20 @@ Responsibility of Container Orchestration tool :
 
 --------------------------------------------------------------------------------------------------------
 Spring Boot : Spring Framework + Embedded HTTP Servers - XML configuration
-Actuator : It actually provides additional features which help us monitor the spring boot application. Specially useful for production  
+Actuator : It actually provides additional features which help us monitor the spring boot application. Specially useful for production
+
+Advantages of Spring Boot over Spring :
+1. Starter POM
+2. Auto Configuration
+3. Component Scanning
+4. Embedded Server
+5. InMemoryDB
+6. Actuators
+
+@SpringBootApplication is a combination of three annotations.
+@Configuration - Signifies it is a configuration class
+@EnableAutoConfiguration - It enables spring boot to autoconfigure application context. It creates the beans of objects based on the beans defined by us in configuration file or defined in classpath.
+@ComponentScan - It scans the packages and configures the application.
 
 XSD: XML Schema Definition
 
