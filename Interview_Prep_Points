@@ -790,6 +790,11 @@ JAR & WAR
 
 spring profile ?
 
+--------------------------------------------------------------------------------------------------------------
+TweetApp Points
+
+* We need to subscribe while calling http endpoints because HTTP calls in angular are asynchronous in nature. By default, it returns Observable in nature.
+
 
 
 
