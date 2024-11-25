@@ -44,6 +44,50 @@ Method Overriding  : When two functions one in parent and one in child,having sa
 
 Method Hiding : When two functions, one in parent and one in child, having same method name and signature but static, then it is called method hiding.
 
+class Complex {
+    public static void f1() {
+        System.out.println(
+                "f1 method of the Complex class is executed.");
+    }
+
+    public void f2()
+    {
+        System.out.println(
+                "f2 method of the Complex class is executed.");
+    }
+}
+
+class Sample extends Complex {
+    public static void f1() {
+        System.out.println(
+                "f1 of the Sample class is executed.");
+    }
+
+    public void f2()
+    {
+        System.out.println(
+                "f2 method of the Sample class is executed.");
+    }
+}
+
+public class InterViewPrep {
+
+    public static void main(String[] args) {
+        Complex d1 = new Complex();
+        Complex d2 = new Sample();
+
+        // Static method should be called with class, not reference variable as it is misleading.
+        // Even though we call using refernce variable, at compile time, class is only considered.
+        // Method hiding
+        d1.f1();
+        d2.f1();
+
+        // Method overriding
+        d1.f2();
+        d2.f2();
+    }
+}
+
 Class : Class is a blueprint of an object, which signifies the data members and methods and that can be accessed via creating an instance of that class.It doesn't consume memory
 		while creation.
 Object: Object is an instance of an class, where each member variables and methods can be accessed by creating an object of that class.It consumes memory while creation.
