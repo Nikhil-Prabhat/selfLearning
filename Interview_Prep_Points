@@ -463,13 +463,83 @@ There are basically two nested classes
 1. Static Inner Class : It can access static members of outer class. We can directly create the object of inner class without creating object of outer class.
 2. Non-static Inner Class : It can access non-static or instance member of outer class. We need to create the object of outer class and then inner class. It can have all the access modifiers
 
-Example :
-In case of static inner class
-Outer.Inner o = new Outer.Inner();
+// Java Inner Class
+// PURPOSE : The purpose of nested classes is to group classes that belong together, which makes your code more readable and maintainable.
+class OuterClass_1 {
+    int x = 10;
 
-In case of non-static outer class
-Outer outer = new Outer();
-Outer.Inner inner = outer.new Inner();
+    class InnerClass_1 {
+        int y = 5;
+    }
+}
+
+// Private Inner Class
+// PURPOSE : If we don't want outside objects to access the inner class, declare the class as private
+
+class OuterClass_2 {
+    int x = 10;
+
+    private class InnerClass_2 {
+        int y = 5;
+    }
+}
+
+// Static Inner Class
+class OuterClass_3 {
+    int x = 10;
+
+    static class InnerClass_3 {
+        int y = 5;
+    }
+}
+
+// Access Outer class from inner class
+// Advantage : inner class can access attributes and methods of outer class
+
+class OuterClass_4 {
+    int x = 10;
+
+    class InnerClass_4 {
+        public int myInnerMethod() {
+            return x;
+        }
+    }
+}
+
+class OuterClass_5 {
+
+    static class InnerClass_5 {
+        static void myInnerMethod() {
+            System.out.println("Hey there!!");;
+        }
+    }
+}
+
+public class InterViewPrep {
+
+    public static void main(String[] args) {
+        // Inner Class
+        OuterClass_1 myOuter = new OuterClass_1();
+        OuterClass_1.InnerClass_1 myInner = myOuter.new InnerClass_1();
+        System.out.println(myInner.y + myOuter.x);
+
+        // Private inner class
+        /*OuterClass_2 myOuter = new OuterClass_2();
+        OuterClass_2.InnerClass_2 myInner = myOuter.new InnerClass_2();
+        System.out.println(myInner.y + myOuter.x);*/
+
+        OuterClass_3.InnerClass_3 myStaticInner = new OuterClass_3.InnerClass_3();
+        System.out.println(myInner.y);
+
+        OuterClass_4 myPublicOuter = new OuterClass_4();
+        OuterClass_4.InnerClass_4 myPublicInner = myPublicOuter.new InnerClass_4();
+        System.out.println(myPublicInner.myInnerMethod());
+
+        OuterClass_5.InnerClass_5.myInnerMethod();
+
+    }
+}
+
 
 Anonymous Classes In Java
 Anonymous classes in java are more accurately known as anonymous inner classes. There is no such anonymous class without inner. They are defined inside another class.
