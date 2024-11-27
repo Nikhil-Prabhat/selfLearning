@@ -413,6 +413,50 @@ Finlaize in Java
 2. finalize() methods are not chained like constructors i.e there is no calling statement to superclass finalize() method inside the subclass of finalize() method.
    You need to explicitly call superclass finalize method.
 
+class MyClass {
+    private String name;
+
+    MyClass(String name) {
+        this.name = name;
+        System.out.println("Object " + name + " is created.");
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            System.out.println("Object " + name + " is being finalized.");
+        } finally {
+            super.finalize();
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyClass obj1 = new MyClass("Test1");
+        MyClass obj2 = new MyClass("Test2");
+
+        obj1 = null; // Mark object for garbage collection
+        obj2 = null; // Mark object for garbage collection
+
+        // Request garbage collection (not guaranteed to run immediately)
+        System.gc();
+
+        // Add a delay to observe the finalization process (not recommended in production code)
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// Output
+Object Test1 is created.
+Object Test2 is created.
+Object Test1 is being finalized.
+Object Test2 is being finalized.
+
 Nested Classes in Java
 
 There are basically two nested classes
