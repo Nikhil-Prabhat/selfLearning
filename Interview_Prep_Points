@@ -667,6 +667,14 @@ A Java Cursor is an Iterator, that is used to iterate or traverse or retrieve a 
 
 In java, local variables can be blank but the instance variables always have default values. If reference variable does not contain anything, bydefault it contains null.
 In java, it is possible to declare a 2d array with different lengths of each array.
+
+int[][] jaggedArray = new int[3][];
+
+// Initialize the sub-arrays with different lengths
+jaggedArray[0] = new int[2]; // First row has 2 elements
+jaggedArray[1] = new int[3]; // Second row has 3 elements
+jaggedArray[2] = new int[4]; // Third row has 4 elements
+
 If two or more strings have the same set of characters in the same sequence, then they share the same reference in the memory.
 Implemeting multithreading with runnable class is much preferable as multiple inheritance is not possible in java and implementing multithreading gives the programmer an opputunity to extend a class.
 
