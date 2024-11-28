@@ -687,6 +687,10 @@ Defining singleton class :
 
 ** To instantiate a normal class, we use a java constructor. On the other hand, to instantiate a singleton class, we use the getInstance() method.
 
+Memory Management
+Heap Memory: Used for dynamic memory allocation. Stores objects and instance variables. Managed by the garbage collector.
+Stack Memory: Used for method calls and local variables. Each thread has its own stack. Memory is managed through stack frames.
+
 class Singleton {
     // Static variable reference of single_instance
     // of type Singleton
