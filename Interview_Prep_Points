@@ -550,6 +550,52 @@ To instantiate anonymous inner class, we can do it by following ways :
 	* Implement an interface
 		new InterfaceName(){methods implementation}
 
+Anonymous Class Properties
+	- It doesn't have any name
+	- It is meant for single instantiation. It is instantiated at the point of declaration. They can't be instantiated multiple times or reused elsewhere in the code.
+	- It can't have explicit constructors
+
+Examples
+
+// Implementation by Interface
+interface Greeting {
+    void sayHello();
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeting greeting = new Greeting() {
+            @Override
+            public void sayHello() {
+                System.out.println("Hello, World!");
+            }
+        };
+        
+        greeting.sayHello(); // Output: Hello, World!
+    }
+}
+
+// Implementation by Class
+class Animal {
+    void makeSound() {
+        System.out.println("Some generic sound");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myDog = new Animal() {
+            @Override
+            void makeSound() {
+                System.out.println("Bark");
+            }
+        };
+        
+        myDog.makeSound(); // Output: Bark
+    }
+}
+
+
 Generic use of anonymous classes
 In applications with a graphical interface, the most common use case of anonymous classes is to create various event listeners. For example, in the following snippet:
 
