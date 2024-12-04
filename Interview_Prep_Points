@@ -802,8 +802,37 @@ there will not be any impact on the interface implementing classes. default meth
 4. Default Method :
    It is used for backward compatibility so that old interfaces can be used to leverage the lambda function
    Ex : forEach()
-   
-   
+
+Java 17 Features
+1. Sealed Classes
+	- Lets you control which classes can extend or implement a given class or interface.
+		public sealed class Shape permits Circle, Rectangle {}
+		public final class Circle extends Shape {}
+		public final class Rectangle extends Shape {}
+2. Pattern Matching for Switch
+	- Makes switch statements more powerful by allowing pattern matching directly within them.
+		switch (obj) {
+		    case Integer i -> System.out.println("Integer: " + i);
+		    case String s -> System.out.println("String: " + s);
+		    default -> System.out.println("Unknown type");
+				}
+3. Text Blocks
+	- Introduced earlier, but refined in Java 17, text blocks allow you to write multi-line strings easily.
+		String json = """
+			{
+			    "name": "John",
+			    "age": 30
+			}
+			""";
+
+4. Enhanced pseudo random number generators
+5. Deprication and removal of applets
+6. Improvement in garbage collections
+
+Java 21 Features
+
+plz go through this : https://www.baeldung.com/java-lts-21-new-features
+
 -------------------------------------------------------------------------------------------------------
 
 SQL
