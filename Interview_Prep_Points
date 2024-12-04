@@ -830,8 +830,14 @@ Java 17 Features
 6. Improvement in garbage collections
 
 Java 21 Features
+1. Virtual Threads
+2. Pattern Matching for switch
+3. Record Patterns
+4. String templates
 
 plz go through this : https://www.baeldung.com/java-lts-21-new-features
+
+
 
 -------------------------------------------------------------------------------------------------------
 
