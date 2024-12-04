@@ -837,6 +837,10 @@ Java 21 Features
 
 plz go through this : https://www.baeldung.com/java-lts-21-new-features
 
+IMP points :
+* JIT compiler translates frequently used parts of the bytecode into native machine code. thus, improving the performance.
+
+
 
 
 -------------------------------------------------------------------------------------------------------
