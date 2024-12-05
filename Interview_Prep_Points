@@ -839,10 +839,14 @@ plz go through this : https://www.baeldung.com/java-lts-21-new-features
 
 IMP points :
 * JIT compiler translates frequently used parts of the bytecode into native machine code. thus, improving the performance.
-
-
-
-
+* Aggregation : Aggregation is best described as a has-a relationship. For example, The aggregate class Employee having various fields such as age, name, and salary also contains an object of Address class having various fields such as Address-Line 1, City, State, and pin-code. 
+  In other words, we can say that Employee (class) has an object of Address class. 
+* Composition : When an object contains the other object, if the contained object cannot exist without the existence of container object, then it is called composition. In other words, we can say that composition is the particular case of aggregation which represents a stronger 
+  relationship between two objects.
+* Aggregation represents the weak relationship whereas composition represents the strong relationship. For example, the bike has an indicator (aggregation), but the bike has an engine (composition).
+* Records are immutable.
+* Java is both call by value and call by reference because for primitive, call by value is used and for objects, call by reference is used.
+  In easy words, if we pass primitve value to a method, it won't change but if we pass object, it's parameters can be changed.
 -------------------------------------------------------------------------------------------------------
 
 SQL
