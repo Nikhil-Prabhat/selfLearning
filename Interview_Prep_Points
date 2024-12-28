@@ -912,6 +912,26 @@ When using SOAP, users often see the firewall security mechanism as the biggest 
 HTTP port used by SOAP that bypasses the firewall. The technical complaint against SOAP is that it mixes the specification for message transport with the 
 specification for message structure.
 
+SOAP is more complex to implement compared to other protocols like REST. It requires strict adherence to its standards (e.g., XML structure, WSDL files, and more). 
+This can make development and debugging time-consuming.
+
+SOAP uses XML for its messages, which is more verbose and larger in size compared to formats like JSON used in REST. 
+<soap:Envelope>
+  <soap:Body>
+    <GetUser>
+      <UserID>123</UserID>
+    </GetUser>
+  </soap:Body>
+</soap:Envelope>
+
+{
+  "UserID": 123
+}
+
+SOAP relies on WSDL (Web Services Description Language), which tightly binds the client and server to a specific contract. 
+If the contract changes, both the client and server need updates, making it less flexible for evolving systems.
+
+SOAP messages are harder to read and debug because of their verbose XML structure. REST, on the other hand, uses more human-readable formats like JSON.
 
  *******  REST (Representation State Transfer) :  *******
 
@@ -920,6 +940,12 @@ specification for message structure.
 The REST architecture is designed in such a way that the client state is not maintained on the server. This is known as statelessness. 
 The context is provided by the client to the server using which the server processes the client’s request. The session on the server is identified by the 
 session identifier sent by the client.
+
+REST (Representational State Transfer) is called stateless because each request from a client to a server must contain all the information the server needs to fulfill the request. 
+The server does not store any information about the client's state between requests. This means:
+
+No Session Data: The server does not keep track of what the client has done before.
+Independent Requests: Every request is treated as an independent transaction.
 
 2. Can you tell the disadvantages of RESTful web services?
 
