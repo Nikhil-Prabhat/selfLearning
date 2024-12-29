@@ -1,0 +1,69 @@
+## Introduction to System Requirements and Architectural Drivers
+
+> Requirements - Formal description of what we need to build.
+> Types of requirements - Architectural drivers
+  ^ Functional Requirements : What actually we need to perform as part of our system. It can be depicted by sequence diagram with all the use cases covered.
+  ^ Quality Attributes      : It defines performance
+      1. Non-functional requirements : Dictates the architecture of the system
+        Ex : Scalability, Availability, Reliability, Security, Performance
+  ^ System Constraints      : Limitations and boundaries
+    1. Technical constraints
+    2. Business constraints
+    3. Global or regional constraints
+
+## Most important quality attributes in Large Scale Systems
+ ^ Response Time : The time between client sending a request and receiving a response. Processing Time + Waiting Time
+ ^ Throughput    : Amount of work performed by our system in time.
+
+ # Important Considerations
+ ^ Measuring Response Time correctly
+ ^ Response Time Distribution
+   > Percentile : The xth percentile is the value below which x% of the values can be found
+   > Tail Latency : The small percentage of response times from a system which take the longest.
+  ^ Performance Degradation
+
+# Scalability
+# Availability
+# Fault Tolerance : Enables our system to be operational and available even due to failures in one or more components
+  ^ Tactics for achieving fault tolerance :
+    > Failure prevention : Replication in multiple AZs
+    > Failure Detection and isolation : Monitoring
+    > Recovery 
+
+# SLA - Service Level Agreement : legal contract that represents our quality service.
+# SLO - Service Level Objective : Each SLO represents our target value that represents our service needs to meet.
+# SLIs - Service Level Indicators : A quantitive measure of our compliance with SLOs
+
+## Introduction to API Design
+
+> An API is a contract between engineers who develop it and clients who consume it. It can be public, private and partner APIs.
+> API Best Practices :
+  - complete encapsulation of internal design
+  - easy to use
+  - keeping the operations idempotent
+  - API Pagination
+  - Asynchronous Operation
+  - Versioning of our APIs
+
+# REST APIS
+  - HATEOS
+  - Statelessness
+  - Cachebility using E-tags
+
+## Large Scale Systems Architectural Blocks
+
+# Load Balancing
+# Asynchronous Architecture
+# API Gateway
+  - Follows a software architecture pattern called API composition. The client application can call one single service.
+# Content Delivery Networks.
+# Relational Database and ACID transactions
+# Microservice Architecture
+# Event Driven Architecture
+# CQRS - CQRS stands for Command Query Responsibility Segregation, and it’s a design pattern used in software development.In CQRS, you separate the parts of the system that handle reading data (queries) from the parts that handle updating data (commands). 
+Each has its own responsibility.
+  
+  
+  
+ 
+ 
