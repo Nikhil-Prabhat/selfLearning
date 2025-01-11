@@ -1080,6 +1080,12 @@ TweetApp Points
 
 * We need to subscribe while calling http endpoints because HTTP calls in angular are asynchronous in nature. By default, it returns Observable in nature.
 
+Liskov Substitution of Solid Principles :
+
+If a method exists in the parent class, the subclass should either:
+	Implement it in a compatible way.
+	Or leave it unchanged.
+
 
 
 
