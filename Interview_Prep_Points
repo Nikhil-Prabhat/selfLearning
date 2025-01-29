@@ -845,8 +845,9 @@ IMP points :
   relationship between two objects.
 * Aggregation represents the weak relationship whereas composition represents the strong relationship. For example, the bike has an indicator (aggregation), but the bike has an engine (composition).
 * Records are immutable.
-* Java is both call by value and call by reference because for primitive, call by value is used and for objects, call by reference is used.
-  In easy words, if we pass primitve value to a method, it won't change but if we pass object, it's parameters can be changed.
+* Java passes object references by value.
+	This allows modifications to the object's internal fields.
+	However, reassigning the reference inside the method does not change the original object reference outside the method.
 -------------------------------------------------------------------------------------------------------
 
 SQL
