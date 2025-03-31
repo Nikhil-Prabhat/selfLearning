@@ -47,8 +47,40 @@
 
 # REST APIS
   - HATEOS
+      HATEOAS (Hypermedia as the Engine of Application State) is a principle of RESTful APIs that means an API response should include links to guide the client on       what actions it can take next.
+      Instead of the client having to "guess" API endpoints, the API self-documents by providing links dynamically.
+
+      REQUEST :
+        GET /users/123
+
+      RESPONSE :
+        {
+          "id": 123,
+          "name": "Alice",
+          "email": "alice@example.com",
+          "_links": {
+            "self": { "href": "/users/123" },
+            "update": { "href": "/users/123", "method": "PUT" },
+            "delete": { "href": "/users/123", "method": "DELETE" },
+            "friends": { "href": "/users/123/friends", "method": "GET" }
+          }
+        }
+
   - Statelessness
   - Cachebility using E-tags
+      ETags do not prevent computation on the server—they primarily help with network bandwidth and client-side caching. However, they can still be useful for 
+      reducing load in certain cases.
+
+      When a client makes a request:
+        Without ETag:
+          The server always processes the request, generates the response, and sends it.
+          This means compute + bandwidth usage every time.
+
+        With ETag (Client-Side Caching Enabled):
+          The client stores the ETag and response.
+          If the user requests the same resource again, the client sends If-None-Match: "<etag>".
+          If the resource hasn't changed, the server responds with 304 Not Modified (without sending the full response).
+          This saves network bandwidth, but yes, the server still computes the ETag.
 
 ## Large Scale Systems Architectural Blocks
 
