@@ -94,6 +94,11 @@
 # Event Driven Architecture
 # CQRS - CQRS stands for Command Query Responsibility Segregation, and it’s a design pattern used in software development.In CQRS, you separate the parts of the system that handle reading data (queries) from the parts that handle updating data (commands). 
 Each has its own responsibility.
+
+✅ Better Performance – Reads and writes can be optimized separately.
+✅ Scalability – Queries can be distributed to replicas, while writes go to the primary database.
+✅ Flexibility – Different databases can be used for reads and writes (e.g., SQL for writes, NoSQL for fast reads).
+✅ Security – Prevents unwanted modifications by keeping read and write operations separate
   
   
   
