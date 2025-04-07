@@ -461,7 +461,7 @@ Nested Classes in Java
 
 There are basically two nested classes
 1. Static Inner Class : It can access static members of outer class. We can directly create the object of inner class without creating object of outer class.
-2. Non-static Inner Class : It can access non-static or instance member of outer class. We need to create the object of outer class and then inner class. It can have all the access modifiers
+2. Non-static Inner Class : It can access both static and non-static or instance member of outer class. We need to create the object of outer class and then inner class. It can have all the access modifiers
 
 // Java Inner Class
 // PURPOSE : The purpose of nested classes is to group classes that belong together, which makes your code more readable and maintainable.
