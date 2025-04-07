@@ -540,6 +540,32 @@ public class InterViewPrep {
     }
 }
 
+// Private Inner Class example
+
+public class OuterClass {
+
+    private String message = "Hello from the outer class!";
+
+    // Private inner class
+    private class InnerClass {
+        void displayMessage() {
+            System.out.println(message);
+        }
+    }
+
+    // Method in the outer class to access the private inner class
+    public void showInnerMessage() {
+        InnerClass inner = new InnerClass();
+        inner.displayMessage();
+    }
+
+    public static void main(String[] args) {
+        OuterClass outer = new OuterClass();
+        outer.showInnerMessage(); // Output: Hello from the outer class!
+    }
+}
+
+
 
 Anonymous Classes In Java
 Anonymous classes in java are more accurately known as anonymous inner classes. There is no such anonymous class without inner. They are defined inside another class.
