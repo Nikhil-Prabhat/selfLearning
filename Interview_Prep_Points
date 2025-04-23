@@ -1113,6 +1113,37 @@ If a method exists in the parent class, the subclass should either:
 	Implement it in a compatible way.
 	Or leave it unchanged.
 
+MicroService Design Pattern
+
+## SAGA design pattern:
+
+It is very hard to achieve transactional capacity in case of distributed microservice environment i.e maintaining isolation and consistency.
+
+* 2 Phase Commit:
+It was used in traditional apporach where there is a transaction coordinator which is used to control and manage the transaction.
+There are basically 2 phases:
+Prepare Phase - Coordinator asks the participating nodes where they are ready to commit the transactions.
+Commit Phase - If all the participating nodes respond affirmative, transaction is commited else rolled back.
+
+Limitation with the above approach :
+- Entire onus is on the coordinator node
+- Single source of failure
+- Not supported by many NoSQL database
+
+Saga Architecture :
+It provides transaction management using sequence of local transactions. If the local transaction is good, then it is fine else, a compensating transcation is executed
+which must be idempotent and retryable.
+
+Saga Choreography Pattern:
+Each microservice that is a part of transaction publishes an event that is processed by the next microservice. On successful completion of one transaction, 
+based on the response, another transaction starts in another microservice.
+In case of failure, compensating transaction should be invoked.
+
+Saga Orchestration Pattern:
+A central SAGA orchestration class is responsible to tell saga participants what to do. It fires the commands to the the participating microservice what steps needs 
+to be taken and based on the response, it'll will decide either positive action needs to be taken or compensation action needs to be taken.
+
+For less no of microservices, use choreography pattern , else orchestration pattern.
 
 
 
