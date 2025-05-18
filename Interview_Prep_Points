@@ -1145,6 +1145,222 @@ to be taken and based on the response, it'll will decide either positive action 
 
 For less no of microservices, use choreography pattern , else orchestration pattern.
 
+/* Coding Example of Few Imp Topics */
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.SQSEvent;
+
+import java.util.List;
+
+public class SQSMessageProcessor implements RequestHandler<SQSEvent, String> {
+
+    @Override
+    public String handleRequest(SQSEvent sqsEvent, Context context) {
+        // Extract the list of SQS messages from the event
+        List<SQSEvent.SQSMessage> messages = sqsEvent.getRecords();
+
+        // Loop through the messages and process each one
+        for (SQSEvent.SQSMessage message : messages) {
+            // Print the body of the message
+            System.out.println("Received message: " + message.getBody());
+
+            // Process the message (for example, log the content or invoke business logic)
+            processMessage(message.getBody());
+        }
+
+        // Return the number of processed messages
+        return "Processed " + messages.size() + " message(s)";
+    }
+
+    // Example of message processing logic
+    private void processMessage(String message) {
+        // Add your business logic here (e.g., storing in a database, calling another service)
+        System.out.println("Processing message: " + message);
+    }
+}
+
+
+
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+
+public class HttpRequestProcessor implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    @Override
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent request, Context context) {
+        // Extract details from the HTTP request
+        String method = request.getHttpMethod();
+        String path = request.getPath();
+        String body = request.getBody();
+
+        // Extract query parameters, if any
+        String name = request.getQueryStringParameters() != null ? request.getQueryStringParameters().get("name") : "Guest";
+
+        // Log the request details
+        System.out.println("Received " + method + " request for " + path);
+        System.out.println("Request body: " + body);
+        System.out.println("Query Parameter: name=" + name);
+
+        // Create a response message
+        String responseMessage = "Hello, " + name + "! You made a " + method + " request to " + path;
+
+        // Create the response object
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+        response.setStatusCode(200); // HTTP status code
+        response.setBody(responseMessage);
+
+        // Optionally, you can set headers if needed
+        response.setHeaders(Map.of("Content-Type", "application/json"));
+
+        return response;
+    }
+}
+
+// Blocking Queue
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class SimpleBlockingQueue<T> {
+    private final Queue<T> queue = new LinkedList<>();
+    private final int capacity;
+
+    public SimpleBlockingQueue(int capacity) {
+        this.capacity = capacity;
+    }
+
+    // Producer adds an element, waits if full
+    public synchronized void put(T item) throws InterruptedException {
+        while (queue.size() == capacity) {
+            wait(); // wait until space is available
+        }
+        queue.add(item);
+        notifyAll(); // notify consumers waiting to take
+    }
+
+    // Consumer takes an element, waits if empty
+    public synchronized T take() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait(); // wait until an item is available
+        }
+        T item = queue.remove();
+        notifyAll(); // notify producers waiting to put
+        return item;
+    }
+
+    public synchronized int size() {
+        return queue.size();
+    }
+}
+
+
+public class TestBlockingQueue {
+    public static void main(String[] args) {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
+
+        // Producer thread
+        new Thread(() -> {
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    queue.put(i);
+                    System.out.println("Produced: " + i);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+
+        // Consumer thread
+        new Thread(() -> {
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    int item = queue.take();
+                    System.out.println("Consumed: " + item);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+    }
+}
+
+// Deadlock Code
+
+public class DeadlockDemo {
+    private static final Object lock1 = new Object();
+    private static final Object lock2 = new Object();
+
+    public static void main(String[] args) {
+        Thread t1 = new Thread(() -> {
+            synchronized (lock1) {
+                System.out.println("Thread 1: Holding lock1...");
+                try { Thread.sleep(100); } catch (InterruptedException ignored) {}
+
+                System.out.println("Thread 1: Waiting for lock2...");
+                synchronized (lock2) {
+                    System.out.println("Thread 1: Holding lock1 and lock2...");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (lock2) {
+                System.out.println("Thread 2: Holding lock2...");
+                try { Thread.sleep(100); } catch (InterruptedException ignored) {}
+
+                System.out.println("Thread 2: Waiting for lock1...");
+                synchronized (lock1) {
+                    System.out.println("Thread 2: Holding lock2 and lock1...");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+
+// Thread Starvation
+
+public class StarvationSimpleExample {
+    public static void main(String[] args) {
+        Runnable lowPriorityTask = () -> {
+            int count = 0;
+            while (count < 5) {
+                System.out.println(Thread.currentThread().getName() + " running, count: " + count);
+                count++;
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        };
+
+        Runnable highPriorityTask = () -> {
+            while (true) {
+                // High priority thread runs continuously, starving others
+                System.out.println(Thread.currentThread().getName() + " running");
+                // No sleep here, so this thread hogs CPU
+            }
+        };
+
+        Thread lowPriorityThread = new Thread(lowPriorityTask, "LowPriorityThread");
+        lowPriorityThread.setPriority(Thread.MIN_PRIORITY);  // 1
+
+        Thread highPriorityThread = new Thread(highPriorityTask, "HighPriorityThread");
+        highPriorityThread.setPriority(Thread.MAX_PRIORITY); // 10
+
+        lowPriorityThread.start();
+        highPriorityThread.start();
+    }
+}
+
+
 
 
  
