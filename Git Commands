@@ -41,4 +41,24 @@ git pull origin master/main
 will pull changes from the origin remote, master branch and merge them to the local checked-out branch.
 
 git pull origin/master 
-will pull changes from the locally stored branch origin/master and merge that to the local checked-out branch. The origin/master branch is essentially a "cached copy" of what was last pulled from origin, which is why it's called a remote branch in git parlance.
+will pull changes from the locally stored branch origin/master and merge that to the local checked-out branch. The origin/master branch is essentially a "cached copy
+" of what was last pulled from origin, which is why it's called a remote branch in git parlance.
+
+
+-- Git commands
+Git Commands
+	• git checkout -b <branch name>                            :  to create a branch locally
+	• git push --set-upstream origin <branch name> : to push the branch to the server
+	• git branch -d <branch name>                                : to delete branch locally
+	• git push origin --delete <branch name>              : to delete branch remotely
+	• git merge --abort                                                     : to abort merge conflict and move back to the last status before merge
+	• git checkout <commit-id>                                      : to checkout to a particular commit
+
+Command Line Commands
+	• set AWS_PROFILE=devl-bale                                 : to set AWS Profile
+	• gimme-aws-creds                                                    : to get the temporary creds for the account to access AWS Resources
+	• aws sts get-caller-identity                                     : to see recent login details
+	• mvn dependency:tree                                           : to see the dependency tree
+	• sudo dockerd                                                          : to start docker on wsl
+echo %AWS_PROFILE%                                         : to check current AWS Profile
+
