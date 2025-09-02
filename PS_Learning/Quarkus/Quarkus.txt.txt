@@ -1,0 +1,45 @@
+** In Quarkus, Rest Assured is commonly used for testing RESTful APIs. It allows you to write expressive and readable tests for your HTTP endpoints.
+
+** Two test folders are created in quarkus 
+
+src/test/java
+This is the standard test folder for writing unit and integration tests using frameworks like JUnit, Rest Assured, Mockito, etc.
+
+Runs on JVM
+Used for:
+Unit tests
+Integration tests
+REST endpoint tests
+Fast and ideal for local development
+
+src/native-test/java
+This folder is used for native image testing, specifically when you're building your application using GraalVM for native compilation.
+
+Runs on Native Executable
+Used for:
+Verifying that your app behaves the same when compiled to native
+Catching issues that only appear in native mode (e.g., reflection, unsupported features)
+Typically slower than JVM tests but crucial for production-ready native apps
+
+Quarkus supports compiling apps to native executables for ultra-fast startup and low memory usage. But native mode can behave differently than JVM mode, so having separate tests ensures reliability across both environments.
+
+** Quarkus vs Spring Boot – Easy Comparison
+Feature								Quarkus								Spring Boot
+Startup Time					Very fast (milliseconds)				Slower (seconds)
+Memory Usage					Low (optimized for containers)			Higher
+Native Compilation				Built-in support via GraalVM			Possible, but harder
+Cloud & Kubernetes				Designed for cloud-native apps			Works well, but not optimized
+Developer Experience			Live reload, fast dev mode				Good, but slower
+Ecosystem						Newer, growing							Mature, huge community
+Performance						High, especially in native mode			Good, but JVM-based
+
+** Why Choose Quarkus?
+If you're building microservices that run in Docker or Kubernetes
+If you want fast startup and low memory usage
+If you're targeting serverless or native binaries
+If you want a modern developer experience with live reload and fast feedback
+
+** Why Stick with Spring Boot?
+If your team is already familiar with Spring
+If you need access to a rich ecosystem of libraries and integrations
+If performance is not a critical concern

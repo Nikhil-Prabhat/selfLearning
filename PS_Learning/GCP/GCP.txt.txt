@@ -1,0 +1,804 @@
+# Google Compute Cloud
+	- We need to reserve the static IP addresses. We can create the static IP in the same region, later on , we can connect this to our VM. We are billed for static IP when we are using it and we are not using it as well. But when we are not using it, we are billed more. (Elastic IP)
+	- Simplifying compute cloud
+		* Startup Script : It is used in case of bootstraping.
+		* Instance Template : Similar to launch template in AWS. It is immutable in nature. Once we create it, we can't modify it. We need to create a new version of the template only.
+		* Custom Image : It is similar to AMI.
+		
+# Optimising cost and performance in Google Cloud
+	- Sustained Use Discounts
+		* Automatic discounts for running VM Instances for significant portion of the billing month.
+		* Applicable for instances created by Google Kubernetes Engine and Compute Engine
+	- Types
+		* Commited use discounts
+			^ For workloads with predictable resource needs.
+			^ Commit for 1 year or 3 years
+			^ Upto 70% discount based on machine type and GPUs
+		
+		* Preemptible VM
+			^ Short lived, cheaper (upto 80%) compute instances
+			^ Can be stopped by GCP at anytime(preempted) within 24 hours
+			^ Instances get 30 second warning (if it wants to save anything)
+			^ Use this only if
+				. the application is fault tolerant
+				. workload is not immediate and cost sensitive
+				
+		* Spot VM
+			^ Latest version of preemtible VMs
+			^ It doesn't have a maximum runtime, comparable to traditional preemtible VMs, which have a maximum runtime of 24 hours
+			
+	- GCP Billing is by second.
+	- To keep VM system running when a host system is going under update, we need to perform live migration i.e the VMs are moved to different hosts while the update is going on. It doesn't change any property for the VM. We need to configure availability policy as well.
+		^ On host maintenance : what should happen during periodic infrastructure maintenance 
+									. Migrate (default)
+									. Terminate
+		^ Automatic restart   : Restart VM instances if they are terminated due to non-user-initiated reasons.
+	- We can also configure custom CPU, Memory and GPU.
+	
+# Gcloud is the command line utility for GCP. Project plays a very important role in GCP. We should always configure it before using command line for GCP.
+
+# Instance Groups
+	- Group of VM instances managed as a single entity, managing lifecycle as a single unit.
+	- Two types of instance groups:
+		* Managed
+			^ Identical VMs created using a template. [Auto scaling, auto healing and managed releases.]
+		* Unmanaged
+			^ Different configuration for VMs in same group.
+			^ Doesn't offer autoscaling, auto healing and other services.
+			^ Not recommended if you need other kind of VMs
+			
+# Cloud load balancing
+	- Distribute user traffic across instances of an application in single region or multiple region.
+	- Fully distributed, software defined managed service.
+	- Features
+		* High availability
+		* Auto Scaling
+		* Resiliency
+	- Terminology
+		* Backend : Group of endpoints that receive traffic from a GCP load balancer.
+		* Frontend: Specify an IP address, port or protocol. This IP address is the frontend IP for the client requests.
+		* Host and path rules: Define rules redirecting the traffic to different backends.
+			^ Based on path : in28min/a, in28min/b
+			^ Based on host : a.in28min, b.in28min
+			^ HTTP headers (Auth Header) and methods
+	- Proxy load balancing : It involves the load balancer acting as an intermediary for client requests. It receives requests from clients and proxies them to backend instances. The load balancer terminates the client's connection and establishes a new connection to the backend.
+	- Pass through load balancing : It involves the load balancer simply passing newtwork packets to the backend instances without terminating them. It is typically used with TCP/UDP traffic.
+	
+# App Engine
+	- It is analogus to Elastic Beanstalk. It is PaaS.
+	- It is the simplest way to deploy and scale your application in GCP.
+	- Provides end to end application management.
+	- Features :
+		* Automatic load balancing and auto scaling
+		* Managed platform updates and application health monitoring
+		* Application versioning
+		* Traffic splitting
+	- Types:
+		* Standard : Application run in language specific sandboxes
+		* Flexible : Application instances run with docker container.
+	- Application Component Hierarchy
+		* Application : One App per project
+		* Services : Multiple microservices or app components
+			^ We can have multiple services in a single application.
+			^ Each service can have different settings.
+		* Version :
+			^ Each version can run in one or more instances.
+			^ Multiple versions can co-exist.
+			^ Options to rollback and split traffic.
+	- Scaling Instances:
+		* Automatic : Automatically scale instances based on the load.
+		* Basic : Instances are created as and when requests are received.
+		* Manaul : Configure specific number of instances to run.
+	
+# Google Kubernetes Engine
+	- Manged Kubernetes Services
+	- Provides pods and cluster autoscaling.
+	- Uses container optimized OS, hardened by Google.
+
+# Container Registry
+	- fully managed container registry provided by GCP.
+	- Can be integrated to CI/CD tools to publish images to registry.
+	- We can secure container images. Analyze for vulnerabilities and enforce deployment policies.
+	
+# Cloud Functions
+	- To execute some code when an event happens
+	- Run code in response to events
+	- pay only to what you use
+	- Time bound (Default 1 min to max 60 mins)
+	- Two products [1st gen and 2nd gen]
+	- It automatically spin up and back down in response to events, it scales horizontally
+	- It is not ideal for long running process.
+	- Analogus to AWS Lambda
+	- Key enhancement in 2nd Gen
+		* Longer Request Timeout - Upto 60 minutes for HTTP triggered functions
+		* Larger instance sizes - Upto 16GB RAM
+		* Concurrency - Upto 1000 concurrent request per function instance
+		* Multiple function revisions and traffic splitting supported.
+	- Typical Serverless Function Architecture
+		* Autoscaling 
+			^ As new invocations come in, new function instances are created.
+			^ One function instance only handles one request at a time.
+		* Cold Start
+			^ New function instance initialisation from scratch can take time.
+	- 1st Gen uses typical serverless function architecture but 2nd gen uses concurrency at function level i.e one function instance can handle multiple request at the same time.
+
+# Cloud Run
+	- Container to Production in seconds
+	- Built on top of open standard - KNative
+	- Fully managed serverless platform for containerized application.
+		* Zero infrastructure management
+		* Pay per use
+	- Anthos
+		* Run Kubernetes cluster anywhere
+		* Deploy our workloads to anthos clusters running on permises or on Google Cloud
+		
+# Cloud KMS
+	- It is used for encryption.
+	- It is used to create and manage cryptographic keys (symmetric and asymmetric)
+	- It provides an api to encrypt, decrypt or sign data
+	- Integrates with almost all GCP services that need data encryption
+		* Google managed key - No configuration required
+		* Customer managed key - use key from KMS
+		* Customer supplied key - provide your own key
+
+# Storage
+	- There are two types of storage
+		* Block Storage : Hard Disk attached to the computer.
+			^ Persistent Disks: Network Block Storage
+				. Zonal : Data replicated in one zone
+				. Regional: Data replicated in multiple zone
+			^ Local SSD : Local Block Storage
+		
+		* File Storage : Enterprise users need a quick way to share files in a secured and organised way.
+			^ FileStore : High performance file storage.
+	
+	- Local SSDs are phiscally attached to the VM instance.
+		* Temoporary data.
+		* Lifecycle tied to VM Instance
+	
+	- Persistent Disks are network storage
+		* More durable
+		* Lifecycle Not tied to VM Instance
+	
+	- Machine Image
+		* It is different from image.
+		* Multiple disks can be attached with a VM.
+			^ One Boot Disk (where OS runs).
+			^ Multiple Data Disks
+		* An image is created from boot persistent disk.
+		* A Machine Image is created from a VM Instance. It contains everything to create a VM Instance.
+			^ Configuration
+			^ Metadata
+			^ Permissions
+			^ Data from one or more disks
+			
+# Object Storage
+	- Most popular, very flexible and inexpensive cloud storage. It is serverless, autoscaling and infinite scale.
+	- Stores large objects using key value approach.
+	- Provides REST Api to access and modify objects.
+	- Store all file types - text, binary, backup and archives.
+	- Max object size is 5TB, but we can store unlimited no of such objects.
+	- Storage Class
+		^ Standard : Frequently used data / Short period of time
+		^ Nearline Storage : Read or modify once a month on an average
+		^ Coldline Storage : Read or modify atmost once a quarter
+		^ Archive : Less than once a year.
+	- Committed SLA is 99.95% for multi region and 99.9% for single region.
+	- Object Versioning
+		* Prevents accidental deletion and provides history
+			^ Enabled at bucket level : Can be turned on/off at any time.
+			^ Live version is the latest version
+				* If you delete live object, it becomes noncurrent object version.
+				* If you delete noncurrent object version, it is deleted.
+			^ Older versions are uniquely identififed by (object key + a generation number)
+	- Object Lifecycle Management
+		* Two kinds of actions:
+			^ Set Storage Class actions (change from one storage class to another)
+			^ Deletion actions (delete objects)
+	- Encryption
+		* Always encrypts data on the server side.
+			^ Google Managed encryption key
+			^ Customer managed encryption key.
+		* It also supports client side encryption.
+
+# IAM
+	- In GCP , roles are predefined set of permissions but in AWS, roles are set of permissions attached to entities which can assume that role.
+	- AWS (Amazon Web Services) and GCP (Google Cloud Platform) both offer roles and policies as part of their Identity and Access Management (IAM) services, but there are some nuances in how these services operate within each platform. Here's a breakdown of the differences and similarities:
+
+		### AWS:
+
+		- **Roles:**
+		  - In AWS, a role is an entity that defines a set of permissions for making AWS service requests.
+		  - Roles can be assumed by trusted entities, which can be an IAM user, an AWS service, or an external user or application.
+		  - Roles are often used to grant permissions to entities that do not have a fixed identity, such as applications running on EC2 instances.
+		  - Roles include temporary security credentials that can be assumed by trusted entities.
+
+		- **Policies:**
+		  - Policies in AWS are JSON documents defining permissions. They can grant or restrict access to AWS resources.
+		  - AWS policies are of several types, including managed policies (AWS-managed or customer-managed) and inline policies (embedded directly into a user, group, or role).
+		  - Policies define what actions are allowed or denied and on which resources, using a fine-grained permission model.
+		  - Policies are attached to IAM identities (users, groups, roles) to define their permissions.
+
+		### GCP:
+
+		- **Roles:**
+		  - In GCP, roles are a collection of permissions. They consist of predefined roles, custom roles, and basic roles.
+		  - Predefined roles provide granular access for specific GCP services and predefined use cases.
+		  - Basic roles (Viewer, Editor, Owner) offer more general permissions across GCP services but are less granular.
+		  - Custom roles allow users to combine specific permissions into roles tailored to their needs.
+		  
+		- **Policies:**
+		  - Policies in GCP are known as IAM policies and consist of a set of bindings applied to resources.
+		  - Each binding in a policy associates one or more members with a role.
+		  - Policies define who (members) has what type of access (roles) to which resource (using resource hierarchies).
+		  - IAM policies are applied at different resource levels (project, folder, organization), and they inherit down the resource hierarchy.
+		  
+		### Key Differences and Similarities:
+
+		- **Granularity and Flexibility:**
+		  - Both AWS and GCP offer granular permission models, but the implementation and terms may differ. AWS uses policies to assign permissions directly to identities or roles, while GCP uses roles within IAM policies that bind members to specific actions.
+		  
+		- **Resource Hierarchies:**
+		  - GCP has a clear resource hierarchy which supports inheritance of policies, simplifying complex organizational structures. AWS doesn't have this direct inheritance mechanism; policies need to be explicitly set at each level.
+
+		- **Role Definition:**
+		  - AWS roles are dynamically assumed and include temporary security credentials. They are often used for cross-account access or to manage permissions for applications on services like EC2. GCP roles are static in that they are assigned to users or service accounts and do not involve temporary credentials by default.
+
+		- **Terminology and Application:**
+		  - While both platforms use similar concepts, terminology and specific implementations differ, which can influence how policies are structured and applied across resources.
+	
+	- Can we basically say, policy in GCP is somewhat similar to roles in AWS
+		In a very broad sense, you could say that GCP's approach to IAM policies serves a similar purpose as AWS roles, in that both are ways of managing permissions and access to resources. However, it's important to understand their distinct functions and structures:
+
+		### GCP Policies vs. AWS Roles:
+
+		1. **GCP Policies:**
+		   - **Function:** Define who (the members) has what level of access (via roles) to which resource.
+		   - **Structure:** Consist of bindings that associate one or more members (users, groups, service accounts) with a role.
+		   - **Hierarchy:** Policies are applied at different levels of the GCP resource hierarchy (such as organization, folder, project), and permissions can be inherited downstream.
+
+		2. **AWS Roles:**
+		   - **Function:** Define a set of permissions to make AWS service requests, which can be assumed by identities.
+		   - **Structure:** Include policies (attached or inline) that specify allowed or denied actions on resources.
+		   - **Access:** Often used for providing permissions to compute resources and establishing trust relationships for cross-account or external access.
+
+		### How They Compare:
+
+		- **Purpose:**
+		  - Both are used for granting access and defining permissions, but GCP IAM policies are more about binding roles to members, while AWS roles are about temporarily assuming permissions for actions on AWS resources.
+
+		- **Definitions:**
+		  - In **GCP**, the IAM policy binds a role (a collection of permissions) to users or services. This separates the specification of permissions (roles) from the assignment (policies).
+		  - In **AWS**, roles themselves carry permissions via attached policies, and they are temporarily taken on by entities (like services or users), often serving for dynamic use cases and cross-service access.
+
+		- **Dynamic vs. Static:**
+		  - **AWS roles** often exhibit dynamic behavior, especially in scenarios like EC2 with IAM roles, allowing temporary security credentials.
+		  - **GCP roles** typically act as predefined sets of permissions or custom configurations permanently granted through policy bindings.
+
+		### Summary:
+
+		While there are conceptual overlaps between GCP policies and AWS roles in terms of managing and applying permissions, they are not directly equivalent due to differences in how each cloud provider structures and executes access control. Understanding these roles within their respective frameworks is critical for effective cloud resource management.
+	- provider "google" {
+	  project = "<YOUR_PROJECT_ID>"
+	  region  = "us-central1"
+	}
+
+	resource "google_project_iam_custom_role" "custom_storage_role" {
+	  role_id     = "CustomStorageViewer"
+	  title       = "Custom Storage Viewer"
+	  description = "A custom role that allows viewing storage objects and listing buckets."
+	  permissions = [
+		"storage.buckets.list",
+		"storage.objects.get",
+		"storage.objects.list",
+	  ]
+	}
+
+	resource "google_storage_bucket" "sample_bucket" {
+	  name     = "my-sample-bucket"
+	  location = "US"
+	}
+
+	resource "google_project_iam_member" "custom_role_binding" {
+	  project = var.project_id
+	  role    = google_project_iam_custom_role.custom_storage_role.id
+	  member  = "user:example-user@example.com"
+	}
+
+	output "bucket_name" {
+	  value = google_storage_bucket.sample_bucket.name
+	}
+
+	- Generic Concepts 
+		* Member : My Colleague
+		* Resources : Specific Cloud Storage Bucket
+		* Action : Upload/Delete Objects
+		
+	- In Google Cloud IAM
+		* Roles : A set of permissions (to perform specific actions on specific resources)
+			^ Roles do not know about members. It is all about permissions.
+		* Policy : Assign a role to a member.
+
+	** IAM Roles
+		- Roles are permissions, it performs some set of actions on some set of resources.
+		- There are basically three types of roles
+			* Basic Role or Primitive Role : Owner/Editor/Viewer - Not recommended to use in production
+			* Predefined Roles : Fine grained roles predefined and managed by Google
+				^ Different roles for different purposes
+				^ Storage admin, storage object admin
+			* Custom roles : When predefined roles are not sufficient, we can create custom roles.
+		- Important points to consider
+			* Member : Who
+			* Roles  : permissions (what actions and resources)
+			* Policy : Assign permissions to members
+				^ Map roles, members and conditions
+				^ Permission are not directly assigned to members
+				^ Permission are represented by role
+				^ Member get permissions through role
+			
+	** IAM Policy
+		- Roles are assigned to users through IAM policy documents.
+		- Represented by a policy object
+			* Policy object has a list of bindings.
+			* A binding, binds a role to list of members.
+		- Member type is identified by prefix e.g user, serviceaccount, group or domain
+	
+	** Service Account
+		- A service account is a special type of account used by applications, virtual machines and other services to interact with GCP resources securely and programmatically.
+		- Features:
+			* Authentication and Authorization : It allows applications to authenticate themselves to GCP and access resources without user intervention. They carry credentials that prove the identity of the application.
+			* Granular Access Control : We can assign IAM roles to service accounts, giving them only the permission they need.
+			* Secure Automation : Ideal for automated tasks
+			* Isolation between services : Each service can have its own service account, isolating permissions and reducing the blast radius in case of a compromise.
+		- Service Account Types:
+			* Default Service Account - Automatically created when some service is used. (Not Recommended)
+			* User Managed - User Created (Recommended)
+			* Google managed service accounts - Created and managed by Google.
+			* Use case - VM to Cloud
+				^ Create a service account role with the right permissions.
+				^ Assign service account role to VM instance
+				^ Use Google Cloud Managed Keys
+				^ Do not delete service accounts used by running instances.
+
+	** ACL (Access Control List)
+		- Defines who has access to your buckets and objects, as well as what level of access they have.
+		- Difference between IAM and ACL
+			* IAM permissions apply to all objects within a bucket.
+			* ACL can be used to customized specific accesses to different objects.
+		- User gets access if he is allowed either by IAM or ACL.
+		- Use IAM for common permission and ACL for customized permission.
+		
+	** Cloud Storage - Signed URL
+		- When we want to allow a user a limited time access to objects, users do not need google accounts.
+		
+# Databases
+	- Relational Database:
+		* Online Transaction Processing (OLTP) 
+			^ Applications where large number of users make large number of small transactions.
+			^ Cloud SQL : Supports PostgreSQL, MySQL and SQL Server for reginal relational databases (upto a few TBs)
+			^ Cloud Spanner : Unlimited Scale and 99.999% availability for global application for horizontal scaling.
+			
+		* Online Analytics Processing (OLAP)
+			^ Applications analyzing petabytes of data.
+			^ BigQuery - GCP Manged Service, petabyte scale distributed data warehouse
+	
+	- NoSQL
+		* Typical NoSQL databases trade-off strong consistency and sql features to achieve scalability and high performance.
+		* Cloud firestore (datastore)
+		* Cloud BigTable
+	
+	- InMemory Datastore
+		* Caching, session management, gaming leader boards, geospatial applications
+		* Memory Store
+
+# Pub/Sub
+	- Reliable, scalable, fully managed, asynchronous messaging service
+	- Backbone of high available and high scalable solutions
+	
+	- Working
+		* Publisher - Sender of a message
+			^ publishers send messages by making HTTPS reqests to pubsub.googleapis.com
+		
+		* Subscriber - Receiver of the message
+			^ Pull - Subscriber pulls message when ready [SQS]
+			^ Push - Messages are sent to subscribers [SNS]
+				` Subscribers provide a webhook endpoint at the time of registration
+				` When a message is received on the topic, a HTTPS POST request is sent to the webhook endpoints.
+		
+		* Very flexible
+			^ Publisher and subscriber relationship : One to many, Many to one and many to many
+	
+	- Topics and Subscriptions
+		* Topic is created.
+		* Subscriptions are created.
+			^ Subscribers register to the topic.
+			^ Each subscription represents discrete pull of messages from a topic.
+			^ Multiple clients pull same subscription => messages split between clients.
+			^ Multiple clients create a subscription each => each client will get every message.
+	
+	- Sending and Receiving messages
+		* Publisher send a message to a topic.
+		* Messages individually delivered to each and every subscription.
+			^ Subscribers can receive messages either by :
+				` Push : Pub/Sub sends the message to Subscriber
+				` Pull : Subscribers poll for messages
+		* Subscribers send ackowledgement(s).
+		* Messages(s) are removed from subscriptions message queue
+			^ Pub/Sub ensures messages is retained per subscription until it is acknowledged.
+			
+	- Differnce between SQS and SNS	
+		* Amazon SQS
+			^ Queue-based model: You create a queue, and producers send messages to it. Consumers poll the queue to retrieve messages.
+			  Point-to-point communication: One message is typically consumed by one receiver.
+			  No topic or subscription concept: It's simpler and more direct.
+		* Google Cloud Pub/Sub
+			^ Topic-based model: You create a topic, and producers publish messages to it.
+			  Consumers must create subscriptions to receive messages from the topic.
+			  Publish-subscribe pattern: One message can be delivered to multiple subscribers.
+		
+		More like Amazon SNS + SQS combo:
+		SNS = Topic
+		SQS = Subscription (if you connect SNS to SQS)
+
+# Networking - Google Cloud VPC
+	- Your own isolated network in GCP Cloud.
+	- You control all the traffic coming in and going out of VPC.
+	- Create all resources within VPC.
+	- VPC is a global resource and contains subsets in one or more region.
+	
+	- VPC Creation and subnets
+		* By default, each project has a default VPC.
+		* Types of VPC:
+			^ Auto mode :
+				` Subnets are automatically created in each region.
+				` Default VPC created automatically in the project uses auto mode.
+			
+			^ Custom mode :
+				` No subnets are automatically created.
+				` You have complete control over subnets and IP ranges.
+				` Recommended for production.
+	
+	- CIDR block
+		* A CIDR block consists of a starting IP address (69.208.0.0/28)
+			^ It indicates that the first 28 bits out of 32 are fixed.
+			^ 2^4 = 16
+	
+	- Firewall Rules
+		* Configure firewall rules to control traffic going in or out of the network.
+		* Stateful.
+		* Each firewall rule has priority (0-65535) assigned to it.
+		* 0 has highest priority. 65535 has least priority.
+		* Default implied rule with lowest priority (65535).
+			^ Allow all egress.
+			^ Deny all ingress.
+			^ Default rules can't be deleted.
+			^ You can override default rules by defining by defining new rules with priority 0-65535.
+		* Ingress Rule : Incoming traffic from outside to GCP targets.
+		* Egress Rule  : Outgoing traffic to destination from GCP targets.
+		* Along with each rule, we can also define
+			^ Priority : Lower the number, higher the priority.
+			^ Action on Match - Allow or Deny traffic.
+			^ Protocol : ex TCP or UDP or ICMP
+			^ Port : Which port
+			^ Enforcement status : Enable or disable.
+	
+	- Shared VPC
+		* When organisation has multiple projects and we want resources in different projects to talk to each other.
+		* Created at organisation or shared folder level (Access Needed : Shared VPC Admin)
+		* Allows VPC network to be shared between projects in same organisation.
+		* Shared VPC contains one host project and multiple service projects
+			^ Host project - Contains shared VPC Network
+			^ Service project - attached to host projects.
+		* It helps us achieve seperation of concerns.
+			^ Network administrators responsible for Host projects and resource users use service projects.
+	
+	- VPC Peering : Connecting VPC networks across different organisations.
+	- Cloud VPN : Connect on premise network to the GCP Network.
+	- Cloud Interconnect : High speed physical connection between on-premise and VPC networks.
+		* Direct Peering
+
+# Cloud Operations 
+	- Cloud Monitoring
+		* To operate cloud operations effectively, so as to monitor the infrastructure
+		* It can be used to monitor one or more GCP Projects and one or more AWS Accounts.
+		* To group all the information from multiple GCP Projects or AWS Accounts - Workspace
+		* Workspace are needed to organize monitoring information
+			^ It allows us to see monitoring information from multiple projects.
+				` Create workspace in a specific project.
+				` Add other GCP projects to the workspace.
+	
+	- Cloud Logging
+		* Real time log management and analysis tool.
+		* Allows to store, search, analyze and alert on massive volume of data
+		* Exabyte scale, fully managed service.
+		* Ingest log data from any source.
+		* Access Transparency Logs : Captures actions performed by GCP team on your content (NOT supported by all services)
+		* Cloud Audit Logs : Answers who did what, when and where
+			^ Admin Activity logs
+			^ Data Access logs
+			^ System Event Audit logs
+			^ Policy Denied Audit logs
+		* Controlling and Routing
+			^ Logs from various sources reach log router.
+			^ Log Router checks against configured rules
+				` What to ingest, what to discard, where to route.
+			^ Two types of logs buckets:
+				` _Required : Holds admin activity, system events and access transparency logs (retained for 400 days)
+					~ You can't delete the bucekt
+					~ Zero charge
+					~ You can't change retention period.
+				` _Default : All other logs (retained for 30 days)
+					~ You are billed based on cloud logging price
+					~ You can't delete the bucket, but you can disable the _Default log sink route to disable ingestion.
+		* Export
+			^ Logs are ideally stored in Cloud logging for limited period.
+			^ For long term retention, logs can be exported to
+				` Cloud storage bucket
+				` Big Query Dataset
+				` Cloud Pub/Sub Topic
+	
+	- Cloud Tracing
+		* Distributed tracing system for GCP. It collects latency data from 
+			^ Supported google cloud services.
+			^ Instrumented application (using tracing libraries) using cloud trace API
+		* It helps us to find out
+			^ How long does a service take to handle requests.
+			^ What is the average latency of requests.
+			^ How are we doing over time? (increasing/decreasing trend)
+			
+	- Cloud Debugger
+		* To debug issues that are happening only in test or production environments.
+		* It captures state of the running application.
+		* Inspect the state of the application directly in the GCP environment.
+		* Take snapshots of variables and call stack.
+		* No need to add logging statements.
+		* No need to redeploy.
+		
+	- Cloud Profiler
+		* To identify performance bottlenecks in production.
+		* Statistical, low-overhead profiler.
+		* Continuously gathers CPU and Memory usage from production systems.
+		* Connect profiling data with application source code
+	
+	- Error reporting
+		* To identify production problem in real time.
+		* Real time exception monitoring
+			^ Aggregates and displays errors reported from cloud services (using stack traces)
+			^ Centralized error management console.
+			^ Use firebase crash reporting for errors from Android and iOS client application.
+			^ Supported for many languages.
+		* Erros can be reported by 
+			^ Sending them to cloud logging.
+			^ By calling error reporting API.
+			
+# Organising GCP Resources
+	- Resource Hierarchy
+		* Organisation -> Folder -> Project -> Resources
+		* Resources are created in projects.
+		* A folder can contain multiple projects.
+		* Organisation can contain multiple folders.
+	
+	- Recommendations
+		* Create seperate projects for different environments
+			^ Complete isolation between test and production environments.
+		* Create seperate folders for each department
+			^ Isolate production application of one department from another
+			^ We can create a shared folder for shared resources.
+		* One project per application per environment.
+	
+	- Billing Accounts
+		* Billing Account is mandatory for creating resources in a project.
+			^ It contains the payable details
+			^ Every project with active resources should be associated with a billing account.
+		* Billing account can be associated with one or more projects.
+		* We can have multiple billing accounts in an organisation.
+		* Two types:
+			^ Self serve : Billed directly to credit card or Bank Account
+			^ Invoiced : Generate invoices (Used by large enterprises)
+			
+		* Setup a billing budget to avoid surprises.
+			^ Configure alerts
+			^ Default alert threshold set at 50%, 90%, 100%
+
+# IAM Best Practices
+	- Principle of least privilege : Give least possible privilege needed for a role
+		* Basic roles are not recommended. Prefer predefined roles when recommended.
+		* Use service accounts with minimum privileges.
+	- Seperation of duties
+		* Involve at least 2 people in sensitive tasks.
+		* Have seperate deployer and service migrator role.
+	
+	- Identity Management in Google Cloud
+		* Super Admin - Email used to create free trial account.
+		* Access to everything in your GCP organizations, folders and projects.
+		* Manage access to other users using their Gmail Accounts
+		* However, this is not recommended for enterprises.
+		* Option 1:
+			^ The enterprise is using Google Workspace
+			^ Use google workspace to manage users.
+			^ Link google cloud organisation with google workspace.
+		* Option 2:
+			^ The enterprise uses an identity provided of its own.
+			^ Federate google cloud with identity provider.
+		* Corporte Directory Federation
+			^ Federate cloud identity or google workspace with your external identity provider such as active directory or Azure Active directory.
+			^ Enable single sign on
+				` Users are redirected to an external IdP to authenticate.
+				` When users are authenticated, SAML assertion is sent to Google sign-in.
+	
+	- IAM Members/Identities
+		* Google Account 	- represents a person.
+		* Service Account 	- represents an application account.
+		* Google group      - Collection - Google & Service Accounts.
+			` Has an unique email address.
+			` Helps to apply access policy to a group.
+		* Google workspace domain : Google workspace (formally G Suite) provides collaboration services for enterprises.
+			` Tools like Gmail, Calender, Meet, Chat, Drive, Docs, etc are included.
+			` If your enterprise is using Google Workspace, you can manage permissions using Google Workspace domain.
+		* Cloud Identity domain : It is an Identity as a service solution that centrally manages users and groups.
+			` You can use IAM to manage access to resources for each cloud identity account.
+			
+# Resource Hierarchy and IAM Policy
+	- IAM Policy can be set at any level of the hierarchy.
+	- Resources inherit the policies of all parents.
+	- The effective policy of a resource is the union of the policy on that resource and its parents.
+	- Policy is transitive. 
+		* Organisational policies are applied at resource level.
+	- We can't restrict policy at lower level if permission is given at a higher level.
+	
+# Other Google Cloud Platform Services
+	- Pricing Calculator
+		* To estimate the cost of google cloud solution.
+	- Deployment Manager [AWS Cloudformation]
+	- Cloud Marketplace
+		* Central repo of easily deployable apps and datasets
+		* Similar to app store/play store for mobile applications.
+	- Cloud DNS - [Route 53]
+	- Cloud dataflow 
+		* Cloud Dataflow is a Google Cloud service that helps you process and analyze large amounts of data—like logs, transactions, or sensor data—in real-time or in batches.
+	- Cloud Dataproc
+		* Managed spark and hadoop service.
+
+
+			
+	
+IMP: 
+Security Group in GCP - Firewall rules
+
+suppose within a VPC, I am having 5 compute instances, but I want different kind of IP access for each instance, is it possible to achieve it, like we have the option of secuity group in AWS
+	Yes, in Google Cloud Platform (GCP), you can achieve similar outcomes to what AWS Security Groups offer by using **Firewall Rules** in combination with **network tags** or **service accounts** to manage different kinds of IP access for each VM instance within a VPC. 
+
+	Here's how you can achieve different IP access for each instance:
+
+	1. **Network Tags**:
+	   - Each VM in GCP can be assigned one or more network tags. Firewall rules can be configured to apply to VMs with specific tags, allowing you to define different access rules for different instances.
+	   
+	   - For example, if you have five instances and you want different rules for each:
+		 - Assign a unique network tag to each instance (e.g., `instance1-tag`, `instance2-tag`, etc.).
+		 - Create firewall rules that specify the tag in their target field, along with the desired IP ranges, protocols, and ports to allow or deny.
+
+	2. **Service Accounts**:
+	   - Firewall rules can also be applied based on the service account associated with the VM. By using different service accounts for your instances, you can control access based on these assignments.
+
+	3. **IP-based Rules**:
+	   - You can also directly define rules that apply to specific IP addresses, ranges, and subnetworks, although this is less flexible than using tags or service accounts if you're managing dynamic instances.
+
+	4. **Priority and Policy**:
+	   - Make sure to set appropriate priorities for your firewall rules. Lower numbers have higher priority, so they will be applied first. This allows for precise control, similar to a security group allowing or denying traffic.
+
+	Here’s an example workflow:
+	- Assume you have VMs `vm1`, `vm2`, ..., `vm5`.
+	- Assign each their own tag: `vm1-tag`, `vm2-tag`, etc.
+	- Create a firewall rule for `vm1` allowing SSH from a specific IP range with target as `vm1-tag`.
+	- Create a different rule for `vm2` allowing HTTP access from another set of IPs with target as `vm2-tag`.
+	- Continue similarly for the other VMs.
+
+	By carefully designing and applying these rules, you can achieve highly customized network configurations for each of your compute instances in GCP, similar to the flexibility offered by AWS Security Groups.
+	
+	Certainly! Let's walk through an example where you have five VM instances within a Google Cloud VPC, and you want to apply different IP access rules to each instance.
+
+	### Assumptions
+	- **VM Instances**: `vm1`, `vm2`, `vm3`, `vm4`, `vm5`
+	- **Network Tags**: `vm1-tag`, `vm2-tag`, `vm3-tag`, `vm4-tag`, `vm5-tag`
+
+	### Desired Firewall Rules
+	1. **VM1**: Allow SSH (port 22) only from `192.168.1.0/24`.
+	2. **VM2**: Allow HTTP (port 80) traffic from `203.0.113.0/24`.
+	3. **VM3**: Allow all outgoing traffic, but restrict incoming traffic.
+	4. **VM4**: Allow RDP (port 3389) from `198.51.100.0/24`.
+	5. **VM5**: Deny all external traffic, allow only internal subnet `10.0.0.0/16`.
+
+	### Steps to Create Firewall Rules
+
+	#### 1. Assign Network Tags to VMs
+	- Ensure each VM has an appropriate tag:
+	  - `vm1` is tagged with `vm1-tag`
+	  - `vm2` is tagged with `vm2-tag`
+	  - `vm3` is tagged with `vm3-tag`
+	  - `vm4` is tagged with `vm4-tag`
+	  - `vm5` is tagged with `vm5-tag`
+
+	#### 2. Create Firewall Rules
+
+	**For `vm1`: Allow SSH from `192.168.1.0/24`**
+	```bash
+	gcloud compute firewall-rules create allow-ssh-vm1 \
+		--network=default \
+		--priority=1000 \
+		--direction=INGRESS \
+		--action=ALLOW \
+		--rules=tcp:22 \
+		--source-ranges=192.168.1.0/24 \
+		--target-tags=vm1-tag
+	```
+
+	**For `vm2`: Allow HTTP from `203.0.113.0/24`**
+	```bash
+	gcloud compute firewall-rules create allow-http-vm2 \
+		--network=default \
+		--priority=1000 \
+		--direction=INGRESS \
+		--action=ALLOW \
+		--rules=tcp:80 \
+		--source-ranges=203.0.113.0/24 \
+		--target-tags=vm2-tag
+	```
+
+	**For `vm3`: Allow all outgoing traffic, restrict incoming**
+	- GCP's default behavior allows all egress. You may only need to ensure that no ingress rules allow unwanted access. For demonstration:
+
+	```bash
+	# Restrict all ingress if no other rules are desired
+	gcloud compute firewall-rules create deny-ingress-vm3 \
+		--priority=1000 \
+		--direction=INGRESS \
+		--action=DENY \
+		--rules=all \
+		--target-tags=vm3-tag
+	```
+
+	**For `vm4`: Allow RDP from `198.51.100.0/24`**
+	```bash
+	gcloud compute firewall-rules create allow-rdp-vm4 \
+		--network=default \
+		--priority=1000 \
+		--direction=INGRESS \
+		--action=ALLOW \
+		--rules=tcp:3389 \
+		--source-ranges=198.51.100.0/24 \
+		--target-tags=vm4-tag
+	```
+
+	**For `vm5`: Deny all external traffic, allow only internal subnet `10.0.0.0/16`**
+	```bash
+	# Allow intra-VPC traffic
+	gcloud compute firewall-rules create allow-internal-vm5 \
+		--network=default \
+		--priority=1000 \
+		--direction=INGRESS \
+		--action=ALLOW \
+		--rules=all \
+		--source-ranges=10.0.0.0/16 \
+		--target-tags=vm5-tag
+
+	# Deny all other ingress
+	gcloud compute firewall-rules create deny-external-vm5 \
+		--priority=1100 \
+		--direction=INGRESS \
+		--action=DENY \
+		--rules=all \
+		--target-tags=vm5-tag
+	```
+
+	These firewall rules configurations allow you to manage access per VM instance, achieving flexibility similar to AWS Security Groups by using network tags to target specific instances for specific rules. Make sure each VM is correctly tagged and test the firewall rules to validate access control works as intended.
+	
+	
+IMP:
+	- In GCP , roles are predefined set of permissions but in AWS, roles are set of permissions attached to entities which can assume that role.
+		
+		
+	
+	
+		
+	
+	

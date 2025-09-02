@@ -1,0 +1,198 @@
+/*****************	Kubernetes *********************/
+
+## Difference between Docker and Container-D
+	- Docker is a complete platform for developing, shipping and running applications in containers. It includes all the pre-requisite tools for docker.
+	- Container-D is an industry standard core container runtime. It focuses on providing basic primitives for running, managing and deploying containers.
+	
+## Difference between Kubelet and Kubectl
+	- kubectl is a client tool meant for users to manage and monitor Kubernetes clusters through interacting with the Kubernetes API server.
+	- kubelet is an agent that runs on each node in the Kubernetes cluster, ensuring that containers are in the desired state per the pod specs from the control plane.
+	
+##Kube-Proxy  
+	- Kube-proxy is a fundamental component that ensures flexible, robust, and scalable networking within Kubernetes clusters by maintaining connectivity and load balancing across services and pods. It abstracts the networking complexity, aiding Kubernetes' powerful service abstraction to work seamlessly in dynamic environments.
+	
+## Replication Controllers and Replica Set
+	- Replication Controllers are old comparable to replicaset. ReplicaSet has got few new features as compared to replication controller. The major difference is replicasets can control pods which are not created by it as well, like the already created pods. Selector is the main tag difference between the yml configuration of replication controller and replicaset.
+	
+	- The template definition section should always be there in yml file in case the pods are already existing. It is because, even any of the nodes fail, it is the duty of the replica set to create new nodes as soon as possible to maintain the desired condition.
+	
+## Deployments
+	- Deployment is an easy way to manage your applications in a containerized environment.
+		* Configuration : We create a deployment using a YAML file. It is like a blueprint describing how the application should run in the kubernetes cluster.
+		* Managing pods : It uses deployment configuration to manage a set of identical pods.
+		* Updating apps : If we have a new version of the app, we can update the deployment with the new container image version. It can perform rolling update.
+		* Scaling : When the app experiences huge demand, it can easily increase the number of replicas.
+		* Rollback: If something goes wrong with the new deployment, it can be easily rolled back without any downtime.
+		* Self Healing: It continuously monitors the health of the pods.
+		
+## Kubernetes Networking
+	- All containers/pods can communicate with one another without NAT
+	- All nodes can communicate with all containers and vice versa without NAT
+	- Inside a kubernetes cluster, an internal network is created for pods [10.244.0.0 for pod but 192.168.0.0 for kubernetes cluster]
+	
+## Services
+	- It enables loose coupling among pods , so as they can communicate with each other like frontend, backend and external data sources. It basically allows the end users to access the application.
+	- Types of services
+		
+		* NodePort : It is a type of service where a virtual service object is created which is responsible for mapping a port from host to target port of the pod on the node. There are basically three ports involved:
+			^ NodePort : [Range 30000-32767]
+			^ ClusterIpNode : Responsible to map node port to target port
+			^ Target Port : Port on the pod of the node
+			^ If there are multiple nodes with the same labels, then the service automatically acts as a load balancer and serving traffic to all the nodes, it uses some random algorithm to distribute the load.
+			
+		* ClusterIP : It is the default service type in kubernetes. When we create a service of type clusterIP, kubernetes assigns it to a stable internal IP address that is accessible only within the cluster. It can be accessed by internal systems.
+		
+		* Load Balancer : It is a service type which is designed to expose a kubernetes service externally. It allows external traffic from outside the cluster to access your application pods inside the cluster. It is well integrated with cloud provider(like AWS or Google). It is mostly used in all cloud environments. It also takes care of dynamic memory allocation and traffic distribution. In short, it does the work of load balancer. The load balancer for the specific cloud is automatically created and allocated to the deployments.
+		
+		* For worker pods, we don't need any service as it doesn't need to be exposed to other apps.
+		
+## Autoscaling in Kubernetes
+	- Define a Deployment, we need a deployment configuration. This deployment will be scaled up/down by the HPA.
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  name: my-app
+		spec:
+		  replicas: 2
+		  selector:
+			matchLabels:
+			  app: my-app
+		  template:
+			metadata:
+			  labels:
+				app: my-app
+			spec:
+			  containers:
+			  - name: my-app-container
+				image: nginx
+				resources:
+				  requests:
+					memory: "64Mi"
+					cpu: "250m"
+				  limits:
+					memory: "128Mi"
+					cpu: "500m"
+					
+	-  Expose the Deployment as a Service to make it accessible to the outside world
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  name: my-app-service
+		spec:
+		  selector:
+			app: my-app
+		  ports:
+			- protocol: TCP
+			  port: 80
+			  targetPort: 80
+		  type: ClusterIP
+		  
+	- Set Up Horizontal Pod Autoscaler. The HPA needs to reference the deployment you want to auto-scale. You can specify the target resource metric (like CPU utilization) in percentage or custom metrics if using additional metric systems.
+		apiVersion: autoscaling/v1
+		kind: HorizontalPodAutoscaler
+		metadata:
+		  name: my-app-hpa
+		spec:
+		  scaleTargetRef:
+			apiVersion: apps/v1
+			kind: Deployment
+			name: my-app
+		  minReplicas: 1
+		  maxReplicas: 10
+		  targetCPUUtilizationPercentage: 50
+		  
+	- Run respective commands to create the components.
+	- Additional Considerations
+		Metrics Server: Ensure that a metrics server is installed in your cluster, as HPA depends on it to fetch CPU/memory usage metrics. You can deploy it using:
+		
+		kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+		
+		Custom Metrics: If you want to scale based on custom metrics, you'll need to integrate with a monitoring system like Prometheus and extend HPA configurations to use those custom metrics.
+
+Policy Management: Manage your scaling policies wisely to avoid too frequent scaling actions, which can lead to instability.
+
+Service Account: https://kubernetes.io/docs/concepts/security/service-accounts/
+	In Kubernetes, a Service Account is a special type of account used by pods to interact with the Kubernetes API. It provides an identity for processes that run in a pod, allowing them to authenticate and perform actions like reading secrets, accessing config maps, or communicating with other services.
+
+	Key Concepts of Service Accounts
+		Default Service Account:
+			Every namespace has a default service account (default).
+			If you don’t specify a service account for a pod, it uses the default one.
+		
+		Custom Service Accounts:
+			You can create your own service accounts to assign specific permissions using RBAC (Role-Based Access Control).
+		Tokens and Secrets:
+			Kubernetes automatically creates a secret containing a token for the service account.
+			This token is mounted into the pod and used for authentication.
+				
+## Analogy comparable to AWS and Kubernetes
+	- Creating pods is almost similar to creating tasks with task definitions within a service in a cluster in ecs-cluster.
+	- Replication controller in kubernetes is somewhat hidden in AWS, which is controlled by AWS only i.e all the works done by replication controller are controlled by AWS. For example - handling autoscaling, self healing of containers, load balancing etc.
+	- IP Address is assigned to each pod in kubernetes instead each container unlike Docker.
+	- It is generally advised to deploy the system through deployments , not pods or services individually as it helps us avoid a lot of manual tasks.
+	- Deployments use replica sets under the hood to handle all the concerns.
+	
+## *********************** HELM ************************************ ##
+
+# HELM
+	- It acts as a package manager for kubernetes.
+	- It simplifies deploying, upgrading and managing applications on a kubernetes cluster.
+
+# Problem with HELM	
+	- Defining/Managing & executing multiple manifest file
+	- Deployment ordering challenge
+	- Versioning and rollbacks for all resources
+	- Environment specific configuration files
+	
+# HELM Constitues :
+	- Chart.yml
+		* This file contains metadata about the chart, such as its name, version and other relevant information.
+	- Values.yml
+		* This file contains default configuration values for the chart. It helps in parameterizing the template.
+	- Charts/ : This directory is used to store any dependent charts. If your chart depends on another charts, they can be included here.
+
+## Difference between HELM and yml file that we create for example deployments in kubernetes.
+	- Standalone YAML files are used for directly applying specific Kubernetes resource configurations, whereas HELM is a more advanced tool that leverages templated YAML configurations (charts) for deploying and managing Kubernetes applications with versioning and environment-specific customizations. HELM abstracts some of the complexities involved in managing Kubernetes resources directly, providing a more streamlined way to handle application configurations and deployments.
+	
+## Is HELM IaC for kubernetes.
+	- While Helm is not IaC in the traditional sense (like Terraform or CloudFormation, which provision low-level infrastructure components such as VMs, networks, etc.), it serves as a form of IaC specifically for Kubernetes by abstracting application definitions and deployment processes into version-controlled, template-driven infrastructures. It is an essential tool for implementing IaC practices in Kubernetes environments.
+	
+## Need of ChartMuseum
+	- To Keep track of versioning and maintaining charts on server, almost like github
+	- It maintains different versions itself while packaging i.e 0.1.0 , 0.1.1
+	
+## Notes
+	- For HELM, we need to download the charts from repository for a specific thing and then we can utilise it.
+	- sprig is the library for predefined functions.
+	
+/************************************* Istio ************************************************************/
+
+# What is a service mesh ?
+	- It is a dedicated infrastructure layer for handling service to service communication within a distributed application. It provides features like traffic management, observability, security and resilience without requiring changes to the application code.
+
+# Why do we need a service mesh ?
+	- It addresses challenges in managing microservices architectures by offering centralized control over communication, improving reliability through features like circuit breaking and retries, enhancing security with mTLS and providing visibility into the service interactions.
+	- Even though kubernetes allows service to service communication but it has some add on features:
+		* mTLS (mutual TLS)
+			^ In istio, it ensures secure communication between services by requiring both client and server to present a valid TLS certificate. It encrypts traffic and provides authentication, preventing unauthorized access and eavesdropping.
+		
+		* Observability 
+			^ It helps us visualise service to service communication through UI.
+		
+		* Advanced deployment strategies
+			^ Canary
+			^ A-B
+	
+# What is traffic management ?
+	- In a service mesh, it involves controlling the flow of the requests between services. It includes features such as load balancing, routing, traffic shaping, and fault tolerance mechanisms like retries and circuit breaking. Istio basically helps in East-West traffic control i.e within the services. There are basically two types of traffic in a cluster
+		* N-S traffic : traffic exposed to users to interact with the service.
+		* E-W traffic : traffic among services.
+		
+# What is a sidecar container ?
+	- In kubernetes, it is an auxiliary container that runs alongside the main application container within the same pod. It enhances or extends the functionality of the main container such as handling networking, logging or monitoring tasks. It basically contains an envoy proxy which serves as a proxy to the traffic and going out and thus the management happens. It is available on all the pods, so a pod basically contains a main container and a sidecar container.
+	
+# Admission Controller 
+	- It enforces policies on objects during their creation or modification. It intercepts requests to the kubernetes API server before objects are persisted and can modify or deny requests based on predefined rules. Istio uses advanced admission controllers to add sidecar container to each pod.
+	
+
+	
