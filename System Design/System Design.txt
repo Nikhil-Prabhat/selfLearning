@@ -1,0 +1,704 @@
+* System Design
+	- It is the process of defining the architecture, components and data flow for a system to meet specific requirements.
+	- It involves making high level decisions about scalability, reliability, performance and maintainability.
+	
+* Importance of System Design
+	- Scalibility & Reliability : Ensures systems handle millions of users without failure.
+	- Architectural Thinking    : How the architecture of the system should look like.
+	- Trade-off and Decision    : Balances scalability, cost, speed and complexity.
+	- Future Proofing           : Prevents bottlenecks and allows smooth evolution of software.
+	
+* Importance of networking in System Design
+	- Communication 	: Ensuring smooth data transfer between clients, servers and databases.
+	- Load Balancing	: Distributing traffic efficiently to prevent overload on a single server.
+	- Security			: Protecting data from unauthorized access and cyber attacks.
+	- Efficiency        : Optimizing network performance to reduce latency and improve user experience.
+	
+* IP Addresses
+	- It is unique numerical labels assigned to devices on a network.
+	- It enables communications between different machines, servers and services across the internet.
+	- IPv4, IPv6
+	- Private and Public
+	- private ips improve security as they are not routable on internet. It enables NAT to allow multiple devices to share a single public IP.
+	
+* DNS
+	- Translates human readable domain names into IP addresses.
+	- It enables accessibility of websites.
+	- It supports distributed, scalable internet architecture.
+	
+	- DNS Caching and Performance Optimization
+		^ Caching reduces latency and load on DNS servers.
+		^ It occurs on browser cache, OS cache and recursive resolver cache.
+		^ TTL - Determines how long a cached record is valid.
+	
+	- DNS resolution process
+		^ User types a domain name in the browser.
+		^ Browser cache check - If the IP is already known.
+		^ Operating System Cache Check.
+		^ Query to the local DNS resolver (ISP or configured DNS server)
+		^ If not found, query goes to Root DNS Servers.
+		^ Top level domains provide authoritative DNS server details.
+		^ Authoritative DNS Server returns the IP address.
+		^ Response is cached and returned to the user.
+	
+	- Importance of DNS in large scale systems
+		^ Ensuring high availability - Load Balancing using DNS
+		^ DNS Failover strategies - Primary and Secondary DNS servers.
+		^ Content Delivery Networks - How DNS directs users to the nearest CDN node for fast loading
+		^ DNS Security Risks - DNS poisioning, cache poisioning and DDoS attacks.
+	
+	- DNS poisioning - It is a type of cyberattack where an attacker corrupts DNS server, he injects false DNS records into the server or cache.
+	
+* Key components of Client Server Model
+	- Client : The user facing application that sends requests.
+	- Server : A system that processes requests and return responses.
+	- Network: The medium that facilitates communication between clients and servers.
+	
+* Synchronous Communication 	- Client waits for a response before proceeding.
+* Asynchronous Communication 	- Client doesn't wait for a response and can perform other tasks.
+
+* Stateless Servers : 
+	- No memory of past interactions, each request is independent.
+	- Example - Rest APIs, HTTP Servers.
+	- Scalability, easy caching and load balancing
+	
+* Stateful Servers:
+	- Maintain session information across requests.
+	- Example - Web Sockets, multiplayer games, banking domain.
+	
+* Proxy
+	- A proxy is an intermediary server between a client and a server.	
+	- It helps with security caching, traffic control and anonymity.
+	
+	- Forward Proxy
+		^ Sits between a client and the internet (used by the clients).
+		^ Clients connect with the forward proxy instead of directly accessing websites.
+		^ Can filter content, anonymity and cache requests.
+		^ Example: Bypass geo restriction, anonymous browsing (VPNs, TOR), Caching web pages for faster access
+	
+	- Reverse Proxy
+		^ Sits between internet and backend servers.
+		^ Clients don't directly communicate with backend servers - requests go through reverse proxy.
+		^ Used for load balancing, caching, security and SSL termination (Offload SSL Processing to proxy).
+		^ Example: Load Balancing across multiple servers, Caching content to improve speed, DDoS protection and security.
+		
+* Importance of Load Balancing
+	- High Availability 	: Ensures system uptime even under high traffic.
+	- Traffic Distribution 	: Spreads requests evenly across servers.
+	- Prevents Overload 	: Avoids overburdening a single server.
+	- Improves performance 	: Reduces latency and enhances response times.
+	- Handles failures 		: Redirecting traffic in case of server failures, hence, handling failures gracefully.
+	- Supports scalability 	: Helps scale systems efficiently.
+		
+* Types of load balancers
+	- Based on Layer
+		^ Layer 4 (Transport Layer)
+		^ Layer 7 (Application Layer)
+	
+	- Based on Deployment
+		^ Hardware load balancers
+		^ Software load balancers
+		^ Cloud based load balancers
+
+* Load Balancer Strategies
+	- Static Load Balancing
+		^ Round Robin 		: Distributes requests sequentially to each server.
+		^ Least Connections : Directs traffic to the server with the fewest connections.
+		^ IP Hashing 		: Routes requests based on client IP
+		
+	- Dynamic Load Balancing
+		^ Least Response Time 		: Sends requests to the server with the fastest responses.
+		^ Adaptive Load Balancing 	: Uses real time monitoring to make decisions.
+		^ Weighted Load Balancing 	: Assigns different weights to servers based on capacity.
+		
+* API Gateway
+	- It is a centralized entry point for all API Requests, handling authentication, routing, caching and security.
+	- It acts as a reverse proxy between clients and backend services.
+	- It receives API requests, processes them and forwards them to the correct services.
+	- It includes request transformation, authentication, rate limiting and response handling.
+	
+* API Gateway Features
+	- Security 
+		^ Authentication and Authorization : Supports OAuth, JWT and API Keys.
+		^ DDos Protection                  : Blocks excessive requests from malicious sources.
+		^ Bot Protection                   : Uses rate limiting and CAPTCHA to filter out bot traffic.
+		^ TLS Termination                  : Handles SSL encryption to secure communication.
+	
+	- Rate Limiting  and Throttling
+		^ Rate Limiting : Restricts the number of API calls per user/IP per second/minute.
+		^ Throttling    : Controls traffic during peak loads to avoid system crashes.
+		^ Helps prevent abuse, protects backend services and ensures fair usages.
+		
+	- Caching for Performance Optimization
+		^ Speeds up API responses by storing frequently accessed data.
+		
+	- API Composition and Aggregation
+		^ It can combine multiple API calls into a single request.
+		^ It is useful for microservice architecture where one client request may need data from multiple services.
+	
+	- Logging and Monitoring
+		^ Helps track API performance, errors and security threats.
+		^ Logs can be used for debugging, auditing and analytics.
+		^ Supports integration with tools like ELK, Prometheus and Grafana.
+
+* Use API Gateway for microservice architectures.
+* Avoid simple monolithic apps with minimal API exposure.
+* Low traffic with internal services only.
+
+* Content Delivery Networks (CDN)
+	- CDN is a globally distributed network of servers that work together to deliver content efficiently. It basically works as an edge server.
+	
+	- Problems without CDN
+		^ High latency due to geographic distance.
+		^ Overload origin servers
+		^ Bandwidth constraints and slow load times
+	
+* CDN request processing
+	- User request content.
+	- CDN directs the request to nearest edge server based on geographic location, network latency and server load.
+	- If the content is available on the edge server, it'll be delivered instantly.
+	- If the content is not cached, the request is forwarded to the origin server, fetched and stored at the edge server.
+	
+* CDN Features
+	- Caching and Replication (Reduced Replication)
+	- Load Balancing and Request Routing : It uses geo-based, latency-based and load aware routing to optimize speed.
+	- Compression and Optimization       : GZip, Brotil and image optimization reduce file size for faster delivery.
+	- Security Features                  : DDoS Protection, SSL/TLS
+	
+* Transmission Control Protocol
+	- Connection-oriented protocol
+	- Reliable, ordered and error checked communication
+	- Ensures data reaches the destincation correctly.
+	
+
+* User Datagram Protocol
+	- Connectionless Protocol
+	- Faster but no delivery gurantees
+	- No retransmission of lost packets
+	
+* HTTP
+	- Stands for HyperText Transmission Protocol
+	- It is text based protocol.
+	- It is stateless in nature.
+	- Supports multiple methods.
+	
+* Stateless Meaning
+	- It doesn't retain any memeory of previous requests.
+	- Each request is treated as an independent transaction.
+	- Handling state :
+		^ Cookies : Small piece of data stored in the browser.
+		^ Sessions: Server side storage of user state
+		^ Token   : Used for authentication and authorization (JWT & OAuth)
+
+* HTTPS
+	- It is the secure version of HTTP, using SSL/TLS encryption.
+	- It ensures data confidentiality, integrity and authentication.
+	- It works for 443 instead of 80.
+	
+* REST
+	- Representational State Transfer
+	- It uses standard HTTP methods and stateless communication.
+	- It is simple and scalable, based on HTTP methods.
+	- It is interoperable, works across different platforms.
+	- It uses caching and statelessness for performance.
+	
+* Best practices for REST
+	- Use proper status codes
+	- Versioning APIs
+	- Implement authentication and authorization
+	- Pagination
+	- Avoid using verbs in URL
+	
+* Real time communication
+	- Continuous exchange of data with minimal latency.
+	- Alternatives to improve real time communication
+		^ Polling
+		^ WebSockets
+		^ Server Sent Events
+		^ Long Polling
+		
+* Web Sockets - Persistent full duplex communication
+	- It provides a persistent, full duplex communication between the client and the server over a single TCP communication.
+	- It handshakes using HTTP upgrade request
+	- Connection remains open for continuous exchange of data
+	- Either client or server can send messages anytime.
+	- It is required when high frequency, bi-directional data exchange is needed
+	- Low latency is critical.
+
+* Long Polling
+	- A technique where client sends a request to the server and waits until the server has new data to respond with.
+	- Instead of immediate responses, the server holds the request until new data is available.
+	- Web sockets are not supported or overkill.
+	- Periodic updates are sufficient.
+	
+* Limitations of REST
+	- Over fetching and under fetching (Clients either get too much or too less of data)
+	- High latency (multiple requests needed for complex data)
+	- Not optmized for real time communication.
+	
+* Introduction to gRPC and GraphQL
+	- gRPC		: A high performance, binary protocol , optimized for microservices and real time communication.
+	- GraphQL	: A flexible query language that allows clients to fetch only the data they need.
+	
+* gRPC
+	- It is built on HTTP/2
+	- Multiplexed calls (multiple requests over one connection)
+	- Compression (smaller payload sizes)
+	- Full duplex streaming (real time bidirectional communication)
+	- uses protobuf for fast serialization
+
+* GraphQL
+	- Instead of multiple REST endpoints, it has one endpoint where clients specify the data they need.
+	- GraphQL Schema defines types and relationships between data.
+	- Client sends queries, GraphQL server resolves fields dynamically.
+
+* Software Architecture
+	- The high level structure of a software system, defining components, their relationships and the way they interact.
+	- It interacts scalability, maintainability, performance and system behaviour.
+	
+* Architectural Styles
+	- Monolithic Architecture 	: Unified system where all components are tightly coupled
+	- Layer (N) Architecture  	: A system split into multiple layers, clear seperation of concerns
+	- Microservice Architecture	: A system built as a collection of small independent services, each focussed on specifc businees capacity.
+	- Event Driven Architecture	: A system where components communicate through events instead of direct calls, enabling loose coupling.
+	
+* Challenges of Microservices
+	- Data Consistency 		: Distributed databases -> Eventual Consistency
+	- Distributed Tracing 	: Difficult to debug and track requests.
+	- Network Overhead 		: More API calls, increased latency
+	- Security 				: Authentication, Authorization and data protection.
+	
+* Synchronous Communication
+	- Blocking calls
+	- Tight coupling
+
+* Asynchronous Communication
+	- Non blocking
+	- Decoupled components
+
+* Techniques for maintaining States
+	- Session Based Authentication : Server Side Session Storage + Cookies for session IDs
+	- Token based Authentication   : JWTs, OAuth
+		^ The session state is embedded within the token itself.
+		
+* Security Concerns in Session Management
+	- Session Hijacking 			: Stolen Session IDs
+	- Cross Site Request Frogery 	: Unauthorized actions
+	- Secure Cookie Handling 		: Avoiding theft via Secure, HttpOnly and SameSite flags
+
+* Best practices for session management
+	- Stickey Sessions
+	- Storing session data in Redis, Memcached
+	- Stateless authentication
+
+* Serialization
+	- Application needs to exchange and store structured data efficiently.
+	- It converts complex objects into a format that can be easily transferred.
+
+* Deserialisation
+	- Converting the data from the specific format to object.
+
+* JSON for APIs, Protobuf for efficiency, Avro for big data.
+
+* CORS
+	- Browsers enforce same origin policy, blocking cross origin requests by default.
+	- It is server driven, the server explicitly needs to allow access.
+	- It can be controlled via headers
+		^ Access-Control-Allow-Origin (which origins can access)
+		^ Access-Control-Allow-Methods (allowed HTTP Methods)
+		^ Access-Control-Allow-Headers (custom headers that can be sent.)
+	
+* Common Problems with CORS
+	- Overly Permissive CORS
+	- Allowing credentials with *
+	- Exposing sensitive information with improper CORS settings.
+
+* Mitigation Strategies
+	- Use a whitelist of trusted origins instead of *.
+	- Set correct CORS policies for different API endpoints.
+	- Use Reverse Proxy or API gateways to handle CORS securely.
+
+* Scalability
+	- It is the ability of the system to handle an increasing amount of work or its potential to accomodate growth.
+	- It ensures performance, reliability and availablity under load.
+	
+* Why do systems need to scale
+	- User Base growth
+	- Increasing data volume
+	- Peak Events
+	- Avoid service degradation or downtime
+	- Meet performance SLAs
+
+* Autoscaling
+	- Automatic adjustments of compute resources based on load
+	- Ensures performance, availability and cost efficiency.
+
+* Categories of Database
+	- Database Storage (SQL/NoSQL)
+	- Object Storage (S3)
+	- File Storage (NFS)
+	- Elastic Block Storage (EBS)
+	
+* CAP Theorem
+	- In any distributed system, you can only fully gurantee 2 out of 3.
+		^ Consistency 			: Every read gets the latest write
+		^ Availability 			: Every request receives a response
+		^ Partition Tolerance	: System continues despite network failures
+		^ No system can have all 3 at the same time.
+	
+	- Since network partitions are unavoidable, especially at scale, real world systems must choose between consistency and availablity during a partition.
+	
+* Types of Systems based on CAP tradeoffs
+	- CP (Consistency + Partition Tolerance)
+		^ Prioritizes data correctness over availability.
+		^ During a partition, the system may reject requests to avoid inconsistent reads.
+		^ Not always available, but when it is - data is guranteed to be correct.
+		^ Financial systems, banking apps
+		
+	- AP (Availability + Partition Tolerance)
+		^ Prioritzes system uptime over consistency.
+		^ During a partition, the system will serve requests , even if they return stale or inconsistent data
+		^ Social media feeds, product catalogues
+	
+	- CA (Consistency + Availability) - The Unicorn
+		^ Only possible if no network partition ever occur
+		^ In practice, not achievable in distributed systems that need to tolearate network faults
+		^ Relational database on standalone mode
+
+* ACID properties for Relational Database
+* BASE properties for NoSQL
+	- Basically Available 
+		^ Always returns a response even if stale
+		^ Soft State: System state may change over time
+		^ Eventual Consistent : Data will be consistent eventually
+		
+* Replication
+	- Copying data from one database node to another for redundancy and performace.
+	- Benefits
+		^ Fault tolerance
+		^ Read performance improvement
+		^ Data availability
+	
+	- Replication may favour availability (trade off)
+	- Strong consistency may sacrifice availability (trade off)
+	
+* Leader follower Replication
+	- How it works:
+		^ Writes go to the leader
+		^ Reads from followers
+	
+	- Consistency Consideration
+		^ Asynchronous Replication - possible lag
+
+* Read Replicas
+	- Scaling read heavy workloads
+	- Often used for load balancing
+	
+* Sharding
+	- Splitting data across multiple databases(shards) to scale horizontally.
+	- It's needed because of performance and storage limits of a single node
+	- Types of sharding
+		^ Horizontal Sharding : Rows are distributed across shards
+		^ Vertical Sharding   : Tables or columns are split across shards based on function or access pattern
+
+* Types of sharding
+	- Range Based Sharding
+		^ Split by value ranges
+		^ Can create hot spots.
+	
+	- Hash Based Sharding
+		^ Distribute using a hash function
+		^ Even distribution but harder to query ranges
+	
+	- Consistent Hashing for Resilient Hash-Based Sharding
+		^ Traditional hashing breaks when nodes are added/removed (re-hashing everything)
+		^ Consistent hashing solves this: Only a subset of keys need to be remapped when topology changes
+		^ Enables better elasticity and fault tolerance.
+	
+	- Geo-Based Sharding
+		^ Shard by user geo location.
+
+* Polyglot Persistence - Need different types of databases for different components.
+
+* Big Data
+	- It refers to datasets too large or complex for traditional data processing tools.
+	- 6 V's of Big Data
+		^ Volume
+		^ Velocity
+		^ Variety
+		^ Veracity
+		^ Value
+		^ Variablity
+		
+* Performance in System Design	
+	- How efficiently a system meets its functional requirements under load
+	- Key dimensions
+		^ Speed
+		^ Capacity
+		^ Efficiency
+	- It is not a single metric, it' a multi dimensional goal
+
+* Latency vs Throughput
+	- Latency
+		^ Time taken to process one request
+		^ Measured in ms or s
+		^ Affect responsiveness
+	- Throughput
+		^ Number of requests processed per second
+		^ Measured in RPS or TPS
+		^ Affects scalability
+	- Low latency is not equal to high throughput or vice versa
+	- Both must be balanced based on use case
+	
+* Performance must be measurable and trackable
+	- SLA (Service Level Agreement) : External Contractual Gurantee --> 99.9% uptime
+	- SLO (Service Level Objective) : Internal Target               --> 99.5 % of requests < 300 ms
+	- SLI (Service Level Indicator) : Actual metric value           --> Actual measurement
+	
+	- Mean/Average is not useful in tail latecy sensitive systems
+	- Percentils provide better insights
+		^ P50 : Median
+		^ P95 : 95% of requests faster than this
+	- Track tail latencies for real world performance insights
+
+* Poor performance leads to
+	- Drop offs and bounce rates
+	- Loss in revenue
+	- System instability under load
+	- Impacts user experience, cost and reputation
+
+* Performance Testing
+	- Load Testing 		: Normal load conditions
+	- Stress Testing 	: Beyond normal limits
+	- Spike Testing 	: Sudden large load
+	- Endurance Testing : Over extended time
+
+* Performance Monitoring
+	- Monitoring is not testing, it's continuous
+	- Key tools
+		^ APM - Application Performance Monitoring (New Relic, Datadog)
+		^ Logs and Metrices ( ELK, Prometheus + Grafana)
+	- Tack
+		^ Latency and Throughput
+		^ Error rates
+		^ Resource usage (CPU, memory, DB Queries)
+
+* Caching
+	- Reduces latency by avoiding expensive recomputation or data retrieval
+	- Eases load on backend services and databases
+	- Improves user experience and system scalability
+	- Critical in low latency, high throughput architectures
+
+* Types of Caching
+	- Client Side : Browser memory
+	- Server Side : Application level memory or in-memory caches like Redis
+	- CDN caching : Static content cached closed to users
+	- Database 	  : Resultset caching, materialized views
+
+* Caching Strategies
+	- Write Through : Write to cache and DB simultaneously
+	- Write back    : Write to cache, DB is updated asynchronously
+	- Lazy loading  : First checked in cache, if not present, go to main server
+	- Manual Caching: Developer decides when to cache or evict
+	
+* Cache Eviction Policies
+	- LRU (Least Recently Used)
+	- LFU (Least Frequently Used)
+	- FIFO (First In, First Out)
+	- TTL (Time to live)
+	
+* Asynchronous Messaging
+	- Loose coupling : Decouple producers from consumers
+	- Improved performance : Producers don't block waiting for consumers
+	- Scalability : Consumers can scale independently
+	- Resilience : Message durability adds fault tolerance
+	- Flexibilty : Easily add new consumers without changing producers
+
+* Delivery Gurantees
+	- At least once (default in many systems)
+		^ Message is retried until acknowledged
+		^ May lead to duplicates
+		^ Consumers must be idempotent
+	
+	- At most once
+		^ Message sent only once
+		^ No retries - may result in message loss
+	
+	- Exactly once
+		^ Guranteed single delivery without duplicates
+		^ Complex and more resource heavy
+		
+* Concurrency and Parallelism
+	- Concurrency 
+		^ When multiple tasks start, run and complete in overlapping time periods - not necessarily simultaneously.
+		^ It's about managing multiple tasks efficiently, especially on single CPU core
+		^ It's all about task management
+	
+	- Parallelism
+		^ When multiple tasks are executed simultaneously, typically on multiple cores
+		^ It's about actual simultaneous execution to speed up performance
+		^ Its not about task execution
+		^ Needs multi core for true parallelism
+
+* Processes and Threads
+	- Processes
+		^ Have their own memory space
+		^ Heavier to create and switch
+		^ Isolated and safer
+	
+	- Threads
+		^ Share memory within a process
+		^ Lightweight and faster
+		^ Can lead to complex bugs, race conditions
+
+* Thread Pools and Worker Models
+	- Thread Pools
+		^ Pre created threads reused for multiple tasks
+		^ Avoid overhead of creating/destroying threads
+	
+	- Worker Model
+		^ Tasks are distributed to idle workers from a shared queue
+		^ Improves scalability and CPU utilization
+
+* Common Pitfall
+	- Race conditions
+	- Deadlocks
+
+* Database improvements
+	- Index Creation
+	- Connection Pooling
+		^ A technique to manage database connections efficiently by reusing established connections instead of creating new ones
+		^ Reduces overhead caused by frequent connection creation and teardown.
+		^ It helps handle a large no of concurrent connections efficiently
+	- Materialized view
+		- A precomputed query result stored as table
+	- Batching and Pagination
+	
+* Reliability
+	- High reliability = low failure + fast recovery
+	- Systems fail. Reliability is how gracefully they handle it.
+	- It is the ability of the system to operate continuously without failure
+	- It includes
+		^ Correctness
+		^ Consistency
+		^ Fault tolerance
+		^ Uptime
+
+* Impact of reliability on System Design
+	- Design decisions that affect reliability
+		^ Redundancy (multiple instances and fail overs)
+		^ Health checks and monitoring
+		^ Retry mechansims and circuit breaker
+		^ Distributed design pattern (replication, quorum)
+	
+	- Challenges
+		^ Network partitions
+		^ Node failures
+		^ Eventual consistency
+	
+	- Solutions
+		^ Use CAP aware theorem
+		^ Ensure fault isolation
+		^ Implement replication
+	
+	- Cloud infra is inherently unreliable
+	- Design for 
+		^ transient failures
+		^ Auto scaling and self healing
+		^ Chaos engineering to test resilience
+
+* Redundancy is crucial to ensuring system reliablity and availability.
+	- Types
+		^ Hardware (servers, storage)
+		^ Network  (network routes, paths)
+		^ Services (microservices, databases)
+		
+* High Availability in Real World Systems
+	- Load Balancers
+	- Replication : Copy data across multiple nodes or data centres for availability.
+	- Failover    : Automatically switch to a backup node/service in case of failures.
+	- Health monitoring and self healing systems
+
+* Backup and Recovery
+	- Backup : Creating copies of data to protect against loss
+	- Recovery : Restoring data from backups after failure or corruption
+	- Critical for disaster recovery, ransomware protection, hardware failures.
+	
+	- Importance of backup
+		^ Hardware or software failure
+		^ Human error
+		^ Cyber attacks
+		^ Natural disasters
+		^ Compliance and data retention
+	
+	- Types of backup
+		^ Full Backup	
+			~ Copies all data
+			~ Simple recovery
+			~ High storage cost and time
+		
+		^ Incremental backup
+			~ Backs up only changes since last backup
+			~ Small, fast but needs all increments to restore
+		
+		^ Differential Backups
+			~ Backs up changes since last full backup
+			~ Bigger than incremental, faster restore
+
+* Disaster Recovery for Mission Critical Applications
+	- Systems must meet strict RTO & RPO targets
+	- Requires redundancy at multiple levels : compute, storage, network
+	- Automated failover + tested recovery plans
+	
+* Failover + Backup = True Resilience
+
+* Why Security Matters in System Design
+	- Security is a non functional requirement but critical for
+		^ User trust
+		^ Data protection
+		^ System Reliability
+	
+	- Security Considerations
+		^ Data in transit and rest
+		^ Authentication and Authorization
+		^ Secure APIs & endpoints
+		^ Node and network level protections
+	
+* CIA Trend
+	- Confidentiality : Prevent unauthorized access
+	- Integrity       : Prevent data tampering
+	- Availablity     : Ensure system uptime and access
+
+* Common Attack Vectors
+	- How attackers get in
+		^ Insecure APIs
+		^ Misconfigured servers
+		^ Poor authentication
+		^ Open ports/services
+		^ DDoS
+		^ Man in the middle attacker
+		^ Injection Attacks
+		^ Spoofing Attacks
+	
+	- Best Practices
+		^ Adopt security by design
+		^ Use encryption (TLS, at-rest)
+		^ Harden infrastructure
+		^ Validate inputs and sanitize outputs
+		^ Monitor and log activity
+
+* Common Authentication Methods
+	- Basic Authentication
+	- OAuth2
+	- OpenID Connect
+	- JWT
+	- Session Based Authentication
+	- Token Based Authentication
+	- Access Control Methods
+	
+* SSO and Identity Federation
+* Firewalls and Reverse Proxies
+* Rate Limiting, Throttling, IP Filtering
+* Network Segmentation and Isolation
+* Security in microservices
+		
