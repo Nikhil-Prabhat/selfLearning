@@ -193,6 +193,8 @@ Service Account: https://kubernetes.io/docs/concepts/security/service-accounts/
 	
 # Admission Controller 
 	- It enforces policies on objects during their creation or modification. It intercepts requests to the kubernetes API server before objects are persisted and can modify or deny requests based on predefined rules. Istio uses advanced admission controllers to add sidecar container to each pod.
+
+https://www.solo.io/topics/istio/istio-kubernetes
 	
 
 	
