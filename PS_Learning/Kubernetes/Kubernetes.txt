@@ -164,6 +164,8 @@ Service Account: https://kubernetes.io/docs/concepts/security/service-accounts/
 ## Notes
 	- For HELM, we need to download the charts from repository for a specific thing and then we can utilise it.
 	- sprig is the library for predefined functions.
+
+https://codefresh.io/learn/kubernetes-management/kubernetes-helm/
 	
 /************************************* Istio ************************************************************/
 
