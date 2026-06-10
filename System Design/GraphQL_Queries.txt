@@ -1,0 +1,161 @@
+** Please provide sample graphql code with spring boot
+
+-- Pom.xml
+<dependencies>
+    <!-- Spring Boot Starter -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- GraphQL Starter -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-graphql</artifactId>
+    </dependency>
+
+    <!-- For REST testing (optional) -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Lombok (optional) -->
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+
+-- schema.graphqls
+type Query {
+  getUserById(id: ID): User
+  getAllUsers: [User]
+}
+
+type Mutation {
+  createUser(name: String, email: String): User
+}
+
+type User {
+  id: ID
+  name: String
+  email: String
+}
+
+-- entity
+package com.example.demo.model;
+
+public class User {
+    private String id;
+    private String name;
+    private String email;
+
+    public User(String id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getEmail() { return email; }
+}
+
+-- service
+package com.example.demo.service;
+
+import com.example.demo.model.User;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class UserService {
+
+    private List<User> users = new ArrayList<>();
+
+    public List<User> getAllUsers() {
+        return users;
+    }
+
+    public User getUserById(String id) {
+        return users.stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public User createUser(String name, String email) {
+        User user = new User(UUID.randomUUID().toString(), name, email);
+        users.add(user);
+        return user;
+    }
+}
+
+-- controller
+package com.example.demo.controller;
+
+import com.example.demo.model.User;
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.*;
+import org.springframework.stereotype.Controller;
+
+import java.util.List;
+
+@Controller
+public class UserGraphQLController {
+
+    @Autowired
+    private UserService userService;
+
+    // Query: get all users
+    @QueryMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    // Query: get user by ID
+    @QueryMapping
+    public User getUserById(@Argument String id) {
+        return userService.getUserById(id);
+    }
+
+    // Mutation: create user
+    @MutationMapping
+    public User createUser(@Argument String name,
+                           @Argument String email) {
+        return userService.createUser(name, email);
+    }
+}
+
+** Please explain graphqls file in simple words
+The .graphqls file defines what data is available and how clients can request it.
+It does NOT contain logic — only structure.
+
+Type (Data Structure)
+Defines what a User looks like i>id ii>name iii>email
+
+Query (Read Operation)
+Used to fetch data
+getUserById → returns one user
+getAllUsers → returns list of users
+
+Mutation (Write operations)
+Used to modify data
+Create
+Update
+Delete
+
+Connection to java code
+.graphqls        Java
+Query            @QueryMapping
+Mutation         @MutationMapping
+User Type        User.java class
+fields           getters in class
+
+GraphQL doesnot use rest annotations, it uses its own annotations.
