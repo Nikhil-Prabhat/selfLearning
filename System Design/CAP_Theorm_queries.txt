@@ -1,0 +1,20 @@
+** When we say NoSQL database inclines towards AP in CAP theorem, does it not care about consistency ?
+  - It doesn't mean it is not consistent at all. It simply means it prefers availability over consistency during a network partition. Let's have a look at the below scenario.
+  - Server A ---> Server B
+    . Let's consider there is network issue between two replicas of the database. So in that case, here the database prefers availability and return stale data
+      instead of giving failure response. Later on, when the network is restored, the databases synchronise and converge to the same value i.e eventual consistency.
+
+** What happens with CP databases in case of network partition ?
+  - In CP system, when a network partition occurs, the system chooses consistency over availablity. Let's have a look at the below scenario.
+  - Server A -----> Server B
+    . Let's consider the scenario the balance value is 100 in server A & 100 in server B.
+    . Suppose due to update, server A has 100 & server B has 150 as balance value and the network partition happens. If the user hits server A now, the database will
+      directly say we can't provide you response or stale data.
+
+** How does the database behave when we have single node database ?
+  - If we have only one replica, then the CAP theorem doesn't come into play practically because there is nothing to partition from.
+  - In case of network failure
+    . Availability is lost for that client.
+    . Consistency is not violated because there isn't another replica that might have different data.
+  - This is not the kind of partition that CAP theorem talks about.
+  
