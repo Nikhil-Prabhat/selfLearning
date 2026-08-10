@@ -1,0 +1,21 @@
+Quarkus Framework
+
+Quarkus is a Kubernetes native Java framework designed for :
+	• Fast startup
+		○ Generally as far as spring boot application is concerned, most of the things are handled at run time. If we talk about the flow, we we build the application, .class files are generated and jar or war is generated. But a number of things are handled at runtime, i.e , scanning of classes at runtime, creation of beans and dependency injection, managing configurations, to make application context ready to be used. That's why spring boot is a bit slow comparable to quarkus as it manages a lot of work at runtime for startup.
+		○ But when we are using quarkus, most of the works are handled at compile time only and it creates a metadata for it. Hence it justifies fast startup and low memory usage.
+	• Low memory usage
+	• Reactive System
+		○ By default, spring boot is blocking in nature. In spring boot, a thread is blocked from it is picked up for process execution till it gives the response back to the client. If we have the request in place but all the threads are busy, in that case, the request has to wait till there comes up a free thread.
+		○ But quarkus by default uses vertex engine, it is developed on top of jetty and netty which is non-blocking servers. So when a thread is picked up here, it's job is to get the request and send it to backend server. As soon as it is delegated there, the thread gets free. The server has some callback mechanism in place which is used when the response is received from backend.  So by default, quarkus is non-blocking and asynchronous in nature.
+	• Containers
+		○ Whenever a container is run, it requires some of the basic details, like the lightweight OS, JDK, app code, jars etc. But quarkus uses grallVM, instead of normal containers and instead of all the lower levels, binary files are created like .exe files on windows machine and then directly used for execution on OS. In case of native image, where graalVM is used, the processing is very fast, so fast that it comes the runtime time is seconds. 
+	• Cloud Native(K8S, Docker friendly)
+		○ It is easy to integrate with cloud and generates a lot of code by default which is easy to containerise further.
+	• Spring Boot is opinionated framework, which implements all stuffs in a separate way but Quarkus is specific framework which uses third parties extensions for specification implementation.
+
+
+
+Imp points
+
+When we use quarkus with dev mode, quarkus with JDK is used, which is used for debugging.
