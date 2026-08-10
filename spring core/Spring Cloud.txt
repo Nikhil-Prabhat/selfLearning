@@ -1,0 +1,116 @@
+Eureka Server :
+Eureka Server is an application that holds the information about all client-service applications. Every Micro service will register into the Eureka server and Eureka server knows all the client applications running on each port and IP address. Eureka Server is also known as Discovery Server.In simple word Eureka is a service Registry or we can say it is an embedded server provided by Netflix third party which integrate with spring framework.
+Main purpose to use Eureka : Micro service Registration and Discovery with Spring Cloud and Netflix's Eureka
+
+Just register your all micro services with Eureka server then no need to call each service by passing exact URL like host name, port just give your service name with which you registered with Eureka server and at end just add endpoint URL
+Ex - Normally we are using below URL to access Payment endpoint, http://localhost:8083/service3/payment .Assume am giving service name as Payment Service So Eureka will excepting the URL to pass to consume rest from client like below.http://PaymentService/service3/payment.
+
+Netflix Ribbon :
+
+Netflix Ribbon is a Part of Netflix Open Source Software (Netflix OSS). It is a cloud library that provides the client-side load balancing. It automatically interacts with Netflix Service Discovery (Eureka) because it is a member of the Netflix family.
+
+The Ribbon mainly provides client-side load balancing algorithms. It is a client-side load balancer that provides control over the behavior of HTTP and TCP client. The important point is that when we use Feign, the Ribbon also applies.
+
+* Features of Ribbon
+Load balancing
+Fault tolerance
+Multiple protocol support in Asynchronous model
+Caching and batching
+
+Types of Load Balancing:
+There are two types of load balancing
+
+Server Side Load Balancing: Server side load balancing is a monolithic It applies between the client and the server. It accepts incoming network, application traffic, and distributes the traffic across the multiple backend servers by using various methods. The middle component is responsible for distributing the client requests to the server.
+Client-Side Load Balancing: The client holds the list of server’s IPs so that it can deliver the requests. The client selects an IP from the list, randomly, and forwards the request to the server.
+
+When ribbon client is implemented with Eureka Server, we don't need to create the config files as Eureka server internally calls ribbon client.
+
+Feign Client :
+
+The Feign is a declarative web service (HTTP client) developed by Netflix. Its aim is to simplify the HTTP API clients. It is a Java to HTTP client binder. If you want to use Feign, create an interface, and annotate it. It provides pluggable annotation support, including Feign annotations and JAX-RS annotations.
+
+It is a library for creating REST API clients. It makes web service clients easier. The developers can use declarative annotations to call the REST services instead of writing representative boilerplate code.
+
+Spring Cloud OpenFeign :
+Spring Cloud OpenFeign provides OpenFeign integrations for Spring Boot apps through auto-configuration and binding to the Spring Environment. Without Feign, in Spring Boot application, we use RestTemplate to call the User service.
+
+Spring Cloud Sleuth :
+We've all had the unfortunate experience of trying to diagnose a problem with a scheduled task, a multi-threaded operation, or a complex web request. Often, even when there is logging, it is hard to tell what actions need to be correlated together to create a single request.
+
+This can make diagnosing a complex action very difficult or even impossible. Often resulting in solutions like passing a unique id to each method in the request to identify the logs.
+
+In comes Sleuth. This library makes it possible to identify logs pertaining to a specific job, thread, or request. Sleuth integrates effortlessly with logging frameworks like Logback and SLF4J to add unique identifiers that help track and diagnose issues using logs.
+
+[application name, traceId, spanId, export]
+
+Application name – This is the name we set in the properties file and can be used to aggregate logs from multiple instances of the same application.
+TraceId – This is an id that is assigned to a single request, job, or action. Something like each unique user initiated web request will have its own traceId.
+SpanId – Tracks a unit of work. Think of a request that consists of multiple steps. Each step could have its own spanId and be tracked individually. By default, any application flow will start with same TraceId and SpanId.
+Export – This property is a boolean that indicates whether or not this log was exported to an aggregator like Zipkin. Zipkin is beyond the scope of this article but plays an important role in analyzing logs created by Sleuth.
+
+Zipkin Server :
+Zipkin is an open source project that provides mechanisms for sending, receiving, storing, and visualizing traces. This allows us to correlate activity between servers and get a much clearer picture of exactly what is happening in our services.
+
+Zuul Gateway :
+Zuul Server is an API Gateway application. It handles all the requests and performs the dynamic routing of microservice applications. It works as a front door for all the requests. It is also known as Edge Server.
+
+Zuul is built to enable dynamic routing, monitoring, resiliency, and security. It can also route the requests to multiple Amazon Auto Scaling Groups.
+
+Why Zuul:
+
+The volume and variety of Netflix API traffic sometimes result in production issues that arises quickly and without warning. So we need a system that allows us to rapidly change behavior in order to react to these situations.
+
+Zuul provides a range of different types of filters that allows us to quickly and nimbly apply functionality to our edge service. The filters perform the following functions:
+
+Authentication and Security: It provides authentication requirements for each resource.
+Insights and Monitoring: It tracks meaningful data and statistics that give us an accurate view of production.
+Dynamic Routing: It dynamically routes the requests to different backed clusters as needed.
+Stress Testing: It increases the traffic to a cluster in order to test performance.
+Load Shedding: It allocates capacity for each type of request and drops a request that goes over the limit.
+Static Response Handling: It builds some responses directly at the edge instead of forwarding them to an internal cluster.
+Multi-region Resiliency: It routes requests across AWS regions in order to diversify our ELB usage.
+
+Consul :
+
+Consul is a Hashicorp based tool for discovering and configuring a variety of different services in your infrastructure. It is based and built on Golang. One of the core reasons to build Consul was to maintain the services present in the distributed systems. Some of the significant features that Consul provides are as follows.
+
+Service Discovery − Using either DNS or HTTP, applications can easily find the services they depend upon.
+Health Check Status − It can provide any number of health checks. It is used by the service discovery components to route traffic away from unhealthy hosts.
+Key/Value Store − It can make use of Consul's hierarchical key/value store for any number of purposes, including dynamic configuration, feature flagging, coordination, leader election, etc.
+Multi Datacenter Deployment − Consul supports multiple datacenters. It is used for building additional layers of abstraction to grow to multiple regions.
+Web UI − Consul provides its users a beautiful web interface using which it can be easy to use and manage all of the features in consul.
+
+Hystrix (Fault Tolerance) :
+
+A typical distributed system consists of many services collaborating together.
+
+These services are prone to failure or delayed responses. If a service fails it may impact on other services affecting performance and possibly making other parts of application inaccessible or in the worst case bring down the whole application.
+
+Of course, there are solutions available that help make applications resilient and fault tolerant – one such framework is Hystrix.
+
+The Hystrix framework library helps to control the interaction between services by providing fault tolerance and latency tolerance. It improves overall resilience of the system by isolating the failing services and stopping the cascading effect of failures.
+
+Resilience :
+
+The library helps with implementing resilient systems by managing fault tolerance for remote communications.
+
+The library is inspired by Hystrix but offers a much more convenient API and a number of other features like Rate Limiter (block too frequent requests), Bulkhead (avoid too many concurrent requests) etc.
+
+The Circuit Breaker pattern helps us in preventing a cascade of failures when a remote service is down.
+
+After a number of failed attempts, we can consider that the service is unavailable/overloaded and eagerly reject all subsequent requests to it. In this way, we can save system resources for calls which are likely to fail.
+
+Circuit Breaker's States and Settings
+A CircuitBreaker can be in one of the three states:
+
+CLOSED – everything is fine, no short-circuiting involved
+OPEN – remote server is down, all requests to it are short-circuited
+HALF_OPEN – a configured amount of time since entering OPEN state has elapsed and CircuitBreaker allows requests to check if the remote service is back online
+We can configure the following settings:
+
+the failure rate threshold above which the CircuitBreaker opens and starts short-circuiting calls
+the wait duration which defines how long the CircuitBreaker should stay open before it switches to half open
+the size of the ring buffer when the CircuitBreaker is half open or closed
+a custom CircuitBreakerEventListener which handles CircuitBreaker events
+a custom Predicate which evaluates if an exception should count as a failure and thus increase the failure rate
+

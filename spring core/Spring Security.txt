@@ -1,0 +1,60 @@
+We are trying to achieve application level security.
+
+Spring Security is a framework which provides application level security.
+
+1. Login and Logout Functionality
+2. Allow/Block Access to URLs to logged in users
+3. Allow/Block Access to URLS to logged in users and with certain roles.
+4. It handles common vulnerabilities
+	* Session Fixation
+	* Clickjacking
+	* Click Site Request Forgery
+	
+Spring Security can do :
+
+1. Username and password authentication
+2. Single Sign On / OKTA / LDAP
+3. App Level Authorization
+4. Intra App Authorization like OAuth
+5. Microservice Security (JWT)
+6. Method Level Security
+
+Five Spring Security Concepts :
+
+1. Authentication : Who Are You
+	Multi Factor Authetication : Knowledge Based Authentication + Possession Based Authentication [ Credentials with device which real user is expected of like  otp or password]
+	
+2. Authorization : Can this user  do what they are trying to do
+
+3. Principal: The currently logged in user will verify you on the basis of credentials. This is basically for authentication.
+
+4. Granted Authority : Authorization basically happens on the basis of this. i.e granted authority, what user is allowed to do [Fine Grained Access]
+
+** To make the things simple, roles are created which is nothing but a set of authorities provided to the user. Every time we don't need  to provide the authorities manually, we will create roles and sync all the authorities with it, and when a new person joins, we can directly assign the roles. [Coarse Grained Access]
+For ex : role_manager, role_clerk
+
+
+LDAP Security is basically used when there are less users , so we can create a ldap file and use it as storage for authentication.
+
+OAuth is basically used for authorization, as authentication is already done. OAuth is used for authorization between services i.e when one service tries to access another service, but need details for authorization.
+
+Some Terminologies for OAuth :
+
+1. Resource - The protected resource which needs to be accessed.
+2. Resource Owner - An entity capable of granting access to protected resource.
+3. Resource Server - The server which is holding the resource.
+4. Client - The thing which is trying to access the resource on behalf of the request owner and with its authorization.
+6. Authorization Server - The server issuing access token to the clients.
+
+Use Case :
+
+Let there be a person who wants to print photo from his google drive. So , the person will request the print service to talk to google drive service to print the photo.
+
+Flow :
+
+1. The person requests to print the photo from google drive.
+2. The print service will connect with authorization server to get the authorization token.
+3. Authorization server will send the request to the actual user to verify, if verified successfully, it'll send the authtoken to print service
+4. The print service will again interact with authorization server to get the access token.
+5. With the access token, the print service will try to access the resource from resource holder.
+6. The resource holder will share the resource on the basis of access token and as per it's authorization.
